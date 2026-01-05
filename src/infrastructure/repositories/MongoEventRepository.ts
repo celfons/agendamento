@@ -1,6 +1,6 @@
 import { Event } from '../../domain/entities/Event';
 import { IEventRepository } from '../../domain/interfaces/IEventRepository';
-import { EventModel } from '../database/EventModel';
+import { EventModel, IEventDocument } from '../database/EventModel';
 
 export class MongoEventRepository implements IEventRepository {
   async create(event: Event): Promise<Event> {
@@ -32,7 +32,7 @@ export class MongoEventRepository implements IEventRepository {
     return result !== null;
   }
 
-  private mapToEntity(doc: any): Event {
+  private mapToEntity(doc: IEventDocument): Event {
     return {
       id: doc._id.toString(),
       name: doc.name,

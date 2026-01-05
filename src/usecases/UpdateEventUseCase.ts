@@ -10,7 +10,26 @@ export class UpdateEventUseCase {
       throw new Error('Event ID is required');
     }
 
+    // Get existing event to validate against current values
+    const existingEvent = await this.eventRepository.findById(id);
+    if (!existingEvent) {
+      return null;
+    }
+
+    // Validate update with context of existing event
     EventValidator.validateUpdateEvent(eventData);
+
+    // Additional validation when only availableSlots is being updated
+    if (
+      eventData.availableSlots !== undefined &&
+      eventData.maxParticipants === undefined
+    ) {
+      EventValidator.validateAvailableSlots(
+        eventData.availableSlots,
+        existingEvent.maxParticipants
+      );
+    }
+
     return this.eventRepository.update(id, eventData);
   }
 }

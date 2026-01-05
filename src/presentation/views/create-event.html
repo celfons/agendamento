@@ -176,11 +176,13 @@
             const maxParticipants = parseInt(e.target.value);
             const availableSlotsInput = document.getElementById('availableSlots');
             
-            if (maxParticipants && parseInt(availableSlotsInput.value) > maxParticipants) {
+            if (!isNaN(maxParticipants) && parseInt(availableSlotsInput.value) > maxParticipants) {
                 availableSlotsInput.value = maxParticipants;
             }
             
-            availableSlotsInput.max = maxParticipants;
+            if (!isNaN(maxParticipants)) {
+                availableSlotsInput.max = maxParticipants;
+            }
         });
     </script>
 </body>
