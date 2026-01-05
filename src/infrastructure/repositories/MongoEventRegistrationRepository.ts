@@ -23,8 +23,18 @@ export class MongoEventRegistrationRepository implements IEventRegistrationRepos
     return registrationDocs.map(doc => this.mapToEntity(doc));
   }
 
+  async findByClientId(clientId: string): Promise<EventRegistration[]> {
+    const registrationDocs = await EventRegistrationModel.find({ clientId }).exec();
+    return registrationDocs.map(doc => this.mapToEntity(doc));
+  }
+
   async findByEventAndUser(eventId: string, userId: string): Promise<EventRegistration | null> {
     const registrationDoc = await EventRegistrationModel.findOne({ eventId, userId }).exec();
+    return registrationDoc ? this.mapToEntity(registrationDoc) : null;
+  }
+
+  async findByEventAndClient(eventId: string, clientId: string): Promise<EventRegistration | null> {
+    const registrationDoc = await EventRegistrationModel.findOne({ eventId, clientId }).exec();
     return registrationDoc ? this.mapToEntity(registrationDoc) : null;
   }
 
@@ -50,7 +60,8 @@ export class MongoEventRegistrationRepository implements IEventRegistrationRepos
     return {
       id: doc._id.toString(),
       eventId: doc.eventId.toString(),
-      userId: doc.userId.toString(),
+      userId: doc.userId ? doc.userId.toString() : undefined,
+      clientId: doc.clientId ? doc.clientId.toString() : undefined,
       status: doc.status,
       registeredAt: doc.createdAt,
       updatedAt: doc.updatedAt
