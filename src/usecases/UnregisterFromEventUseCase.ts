@@ -7,29 +7,27 @@ export class UnregisterFromEventUseCase {
     private eventRepository: IEventRepository
   ) {}
 
-  async execute(eventId: string, userId: string): Promise<void> {
+  async execute(eventId: string, phone: string): Promise<void> {
     // Check if event exists
     const event = await this.eventRepository.findById(eventId);
     if (!event) {
       throw new Error('Event not found');
     }
 
-    // Check if user is registered
-    const registration = await this.eventRegistrationRepository.findByEventAndUser(
+    // Check if person is registered
+    const registration = await this.eventRegistrationRepository.findByEventAndPhone(
       eventId,
-      userId
+      phone
     );
     if (!registration) {
-      throw new Error('User is not registered for this event');
-    }
-
-    // Ensure registration has an id
-    if (!registration.id) {
-      throw new Error('Invalid registration record');
+      throw new Error('This phone number is not registered for this event');
     }
 
     // Delete registration
-    await this.eventRegistrationRepository.delete(registration.id);
+    const deleted = await this.eventRegistrationRepository.deleteByEventAndPhone(eventId, phone);
+    if (!deleted) {
+      throw new Error('Failed to unregister from event');
+    }
 
     // Update available slots
     await this.eventRepository.update(eventId, {
