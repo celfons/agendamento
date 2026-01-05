@@ -17,6 +17,9 @@ export class EventValidator {
     availableSlots: number,
     maxParticipants: number
   ): void {
+    if (availableSlots < 0) {
+      throw new Error('Available slots cannot be negative');
+    }
     if (availableSlots > maxParticipants) {
       throw new Error('Available slots cannot exceed maximum participants');
     }
