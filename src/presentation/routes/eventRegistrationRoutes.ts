@@ -11,7 +11,13 @@ export class EventRegistrationRoutes {
   }
 
   private initializeRoutes(): void {
-    // All registration routes require authentication
+    // Public route - Guest registration (no authentication required)
+    this.router.post(
+      '/public/events/:eventId',
+      (req, res) => this.eventRegistrationController.registerGuest(req, res)
+    );
+
+    // All other registration routes require authentication
     this.router.use(AuthMiddleware.authenticate);
 
     // List user's registrations
@@ -20,7 +26,7 @@ export class EventRegistrationRoutes {
       (req, res) => this.eventRegistrationController.listByUser(req, res)
     );
 
-    // Register to an event
+    // Register to an event (authenticated users)
     this.router.post(
       '/events/:eventId',
       (req, res) => this.eventRegistrationController.register(req, res)

@@ -1,5 +1,6 @@
-import { Response } from 'express';
+import { Request, Response } from 'express';
 import { RegisterToEventUseCase } from '../../usecases/RegisterToEventUseCase';
+import { RegisterGuestToEventUseCase } from '../../usecases/RegisterGuestToEventUseCase';
 import { UnregisterFromEventUseCase } from '../../usecases/UnregisterFromEventUseCase';
 import { ListEventRegistrationsUseCase } from '../../usecases/ListEventRegistrationsUseCase';
 import { AuthRequest } from '../../infrastructure/middleware/AuthMiddleware';
@@ -7,6 +8,7 @@ import { AuthRequest } from '../../infrastructure/middleware/AuthMiddleware';
 export class EventRegistrationController {
   constructor(
     private registerToEventUseCase: RegisterToEventUseCase,
+    private registerGuestToEventUseCase: RegisterGuestToEventUseCase,
     private unregisterFromEventUseCase: UnregisterFromEventUseCase,
     private listEventRegistrationsUseCase: ListEventRegistrationsUseCase
   ) {}
@@ -23,6 +25,44 @@ export class EventRegistrationController {
         eventId,
         req.user.userId
       );
+      res.status(201).json(registration);
+    } catch (error) {
+      res.status(400).json({ error: (error as Error).message });
+    }
+  }
+
+  async registerGuest(req: Request, res: Response): Promise<void> {
+    try {
+      const { eventId } = req.params;
+      const { name, lastName, email, phone } = req.body;
+
+      // Validate required fields
+      if (!name || !lastName || !email || !phone) {
+        res.status(400).json({ 
+          error: 'All fields are required: name, lastName, email, phone' 
+        });
+        return;
+      }
+
+      // Basic email validation
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(email)) {
+        res.status(400).json({ error: 'Invalid email format' });
+        return;
+      }
+
+      // Basic phone validation (at least 10 digits)
+      const phoneRegex = /^\+?[\d\s\-()]{10,}$/;
+      if (!phoneRegex.test(phone)) {
+        res.status(400).json({ error: 'Invalid phone format' });
+        return;
+      }
+
+      const registration = await this.registerGuestToEventUseCase.execute(
+        eventId,
+        { name, lastName, email, phone }
+      );
+      
       res.status(201).json(registration);
     } catch (error) {
       res.status(400).json({ error: (error as Error).message });

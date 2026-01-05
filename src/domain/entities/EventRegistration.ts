@@ -7,7 +7,8 @@ export enum RegistrationStatus {
 export interface EventRegistration {
   id?: string;
   eventId: string;
-  userId: string;
+  userId?: string; // For authenticated users
+  clientId?: string; // For guest clients (non-authenticated)
   status: RegistrationStatus;
   registeredAt?: Date;
   updatedAt?: Date;

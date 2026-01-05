@@ -2,6 +2,7 @@ import { MongoEventRepository } from '../infrastructure/repositories/MongoEventR
 import { MongoUserRepository } from '../infrastructure/repositories/MongoUserRepository';
 import { MongoGroupRepository } from '../infrastructure/repositories/MongoGroupRepository';
 import { MongoEventRegistrationRepository } from '../infrastructure/repositories/MongoEventRegistrationRepository';
+import { MongoClientRepository } from '../infrastructure/repositories/MongoClientRepository';
 import { CreateEventUseCase } from '../usecases/CreateEventUseCase';
 import { ListEventsUseCase } from '../usecases/ListEventsUseCase';
 import { GetEventByIdUseCase } from '../usecases/GetEventByIdUseCase';
@@ -13,6 +14,7 @@ import { CreateGroupUseCase } from '../usecases/CreateGroupUseCase';
 import { ListGroupsUseCase } from '../usecases/ListGroupsUseCase';
 import { AddUserToGroupUseCase } from '../usecases/AddUserToGroupUseCase';
 import { RegisterToEventUseCase } from '../usecases/RegisterToEventUseCase';
+import { RegisterGuestToEventUseCase } from '../usecases/RegisterGuestToEventUseCase';
 import { UnregisterFromEventUseCase } from '../usecases/UnregisterFromEventUseCase';
 import { ListEventRegistrationsUseCase } from '../usecases/ListEventRegistrationsUseCase';
 import { EventController } from '../presentation/controllers/EventController';
@@ -26,6 +28,7 @@ export class Container {
   private static userRepository: MongoUserRepository;
   private static groupRepository: MongoGroupRepository;
   private static eventRegistrationRepository: MongoEventRegistrationRepository;
+  private static clientRepository: MongoClientRepository;
   
   private static eventController: EventController;
   private static authController: AuthController;
@@ -95,11 +98,17 @@ export class Container {
       const eventRegistrationRepository = Container.getEventRegistrationRepository();
       const eventRepository = Container.getEventRepository();
       const userRepository = Container.getUserRepository();
+      const clientRepository = Container.getClientRepository();
       
       const registerToEventUseCase = new RegisterToEventUseCase(
         eventRegistrationRepository,
         eventRepository,
         userRepository
+      );
+      const registerGuestToEventUseCase = new RegisterGuestToEventUseCase(
+        eventRegistrationRepository,
+        eventRepository,
+        clientRepository
       );
       const unregisterFromEventUseCase = new UnregisterFromEventUseCase(
         eventRegistrationRepository,
@@ -111,6 +120,7 @@ export class Container {
 
       Container.eventRegistrationController = new EventRegistrationController(
         registerToEventUseCase,
+        registerGuestToEventUseCase,
         unregisterFromEventUseCase,
         listEventRegistrationsUseCase
       );
@@ -157,6 +167,14 @@ export class Container {
     }
 
     return Container.eventRegistrationRepository;
+  }
+
+  private static getClientRepository(): MongoClientRepository {
+    if (!Container.clientRepository) {
+      Container.clientRepository = new MongoClientRepository();
+    }
+
+    return Container.clientRepository;
   }
 }
 
