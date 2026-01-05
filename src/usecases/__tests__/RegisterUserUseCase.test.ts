@@ -58,10 +58,18 @@ describe('RegisterUserUseCase', () => {
 
     it('should set default role to USER when role is not provided', async () => {
       mockUserRepository.findByEmail.mockResolvedValue(null);
-      const userDataWithoutRole = { ...validUserData };
-      delete (userDataWithoutRole as any).role;
+      const userDataWithoutRole: any = {
+        name: validUserData.name,
+        email: validUserData.email,
+        password: validUserData.password,
+        role: undefined, // Explicitly undefined to test default role assignment
+      };
 
-      const createdUser: User = { ...userDataWithoutRole, role: UserRole.USER, id: '123' };
+      const createdUser: User = { 
+        ...userDataWithoutRole, 
+        role: UserRole.USER, 
+        id: '123' 
+      };
       mockUserRepository.create.mockResolvedValue(createdUser);
 
       const result = await registerUserUseCase.execute(userDataWithoutRole);
