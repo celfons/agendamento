@@ -52,8 +52,8 @@ export class EventRegistrationController {
       }
 
       // Basic phone validation (at least 10 digits with optional + and formatting characters)
-      const phoneRegex = /^\+?[\d]{10,}$/;
       const cleanedPhone = phone.replace(/[\s\-()]/g, '');
+      const phoneRegex = /^\+?[\d]{10,}$/;
       if (!phoneRegex.test(cleanedPhone)) {
         res.status(400).json({ error: 'Invalid phone format. Phone must contain at least 10 digits' });
         return;
@@ -61,7 +61,7 @@ export class EventRegistrationController {
 
       const registration = await this.registerGuestToEventUseCase.execute(
         eventId,
-        { name, lastName, email, phone }
+        { name, lastName, email, phone: cleanedPhone }
       );
       
       res.status(201).json(registration);
