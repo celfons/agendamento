@@ -13,6 +13,9 @@ export class ViewRoutes {
     this.router.get('/', (req, res) => this.viewController.renderHome(req, res));
     this.router.get('/create', (req, res) => this.viewController.renderCreateEvent(req, res));
     this.router.get('/event/:id', (req, res) => this.viewController.renderEventDetail(req, res));
+    this.router.get('/login', (req, res) => this.viewController.renderLogin(req, res));
+    this.router.get('/register-event', (req, res) => this.viewController.renderRegisterEvent(req, res));
+    this.router.get('/users', (req, res) => this.viewController.renderUsers(req, res));
   }
 
   public getRouter(): Router {

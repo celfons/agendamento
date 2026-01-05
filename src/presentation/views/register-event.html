@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inscrição em Evento - EventPro</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --primary-color: #667eea;
+            --secondary-color: #764ba2;
+            --success-color: #10b981;
+            --danger-color: #ef4444;
+            --light-bg: #f8fafc;
+            --card-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+        
+        * {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+        
+        body {
+            background: var(--light-bg);
+            min-height: 100vh;
+        }
+        
+        /* Navbar Styles */
+        .navbar-custom {
+            background: var(--primary-gradient);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            padding: 1rem 0;
+        }
+        
+        .navbar-brand {
+            font-weight: 700;
+            font-size: 1.5rem;
+            color: white !important;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .navbar-brand i {
+            font-size: 1.8rem;
+        }
+        
+        /* Event Header */
+        .event-header {
+            background: white;
+            border-radius: 20px;
+            box-shadow: var(--card-shadow);
+            padding: 2rem;
+            margin-top: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .event-header h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 1rem;
+        }
+        
+        .event-info-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: #f1f5f9;
+            padding: 0.5rem 1rem;
+            border-radius: 10px;
+            margin-right: 0.75rem;
+            margin-bottom: 0.75rem;
+            color: #475569;
+            font-size: 0.95rem;
+        }
+        
+        .event-info-badge i {
+            color: var(--primary-color);
+        }
+        
+        .badge-slot {
+            background: var(--success-color);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+        
+        /* Registration Form */
+        .registration-container {
+            max-width: 600px;
+            margin: 0 auto 3rem auto;
+        }
+        
+        .registration-card {
+            background: white;
+            border-radius: 20px;
+            box-shadow: var(--card-shadow);
+            padding: 2.5rem;
+        }
+        
+        .form-header {
+            text-align: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 2px solid #e2e8f0;
+        }
+        
+        .form-header h2 {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: #1e293b;
+            margin: 0 0 0.5rem 0;
+        }
+        
+        .form-header p {
+            color: #64748b;
+            margin: 0;
+        }
+        
+        .form-label {
+            font-weight: 600;
+            color: #475569;
+            margin-bottom: 0.5rem;
+        }
+        
+        .form-control {
+            padding: 0.75rem 1rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+        }
+        
+        .form-control:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+        }
+        
+        .mb-3 {
+            margin-bottom: 1.5rem !important;
+        }
+        
+        .btn-register {
+            width: 100%;
+            background: var(--primary-gradient);
+            border: none;
+            color: white;
+            font-weight: 600;
+            padding: 0.875rem;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(102, 126, 234, 0.3);
+            font-size: 1.1rem;
+        }
+        
+        .btn-register:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(102, 126, 234, 0.4);
+            color: white;
+        }
+        
+        .btn-register:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .btn-back {
+            width: 100%;
+            background: white;
+            border: 2px solid #e2e8f0;
+            color: #475569;
+            font-weight: 600;
+            padding: 0.75rem;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            margin-top: 1rem;
+        }
+        
+        .btn-back:hover {
+            background: #f8fafc;
+            border-color: #cbd5e1;
+        }
+        
+        .alert {
+            border-radius: 12px;
+            border: none;
+            padding: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .loading-state {
+            text-align: center;
+            padding: 4rem 2rem;
+        }
+        
+        .spinner-custom {
+            color: var(--primary-color);
+        }
+        
+        .success-state {
+            text-align: center;
+            padding: 3rem 2rem;
+            display: none;
+        }
+        
+        .success-state i {
+            font-size: 4rem;
+            color: var(--success-color);
+            margin-bottom: 1rem;
+        }
+        
+        .success-state h3 {
+            color: #1e293b;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+        
+        .success-state p {
+            color: #64748b;
+            margin-bottom: 1.5rem;
+        }
+        
+        @media (max-width: 768px) {
+            .registration-card {
+                padding: 1.5rem;
+            }
+            
+            .event-header {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-custom">
+        <div class="container">
+            <a class="navbar-brand" href="/">
+                <i class="bi bi-calendar-event-fill"></i>
+                <span>EventPro</span>
+            </a>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container">
+        <!-- Event Header -->
+        <div class="event-header" id="eventHeader" style="display: none;">
+            <h1 id="eventName"></h1>
+            <p id="eventDescription" style="color: #64748b; margin-bottom: 1rem;"></p>
+            <div id="eventBadges"></div>
+        </div>
+
+        <!-- Registration Form -->
+        <div class="registration-container">
+            <div class="registration-card">
+                <!-- Loading State -->
+                <div class="loading-state" id="loadingState">
+                    <div class="spinner-border spinner-custom" role="status" style="width: 3rem; height: 3rem;">
+                        <span class="visually-hidden">Carregando...</span>
+                    </div>
+                    <p class="mt-3 text-muted">Carregando informações do evento...</p>
+                </div>
+
+                <!-- Registration Form -->
+                <form id="registrationForm" style="display: none;">
+                    <div class="form-header">
+                        <h2>
+                            <i class="bi bi-person-plus-fill"></i>
+                            Inscreva-se no Evento
+                        </h2>
+                        <p>Preencha seus dados para confirmar sua participação</p>
+                    </div>
+
+                    <div id="registrationAlert"></div>
+
+                    <div class="mb-3">
+                        <label for="firstName" class="form-label">
+                            <i class="bi bi-person"></i> Nome
+                        </label>
+                        <input type="text" class="form-control" id="firstName" placeholder="Seu nome" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="lastName" class="form-label">
+                            <i class="bi bi-person"></i> Sobrenome
+                        </label>
+                        <input type="text" class="form-control" id="lastName" placeholder="Seu sobrenome" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="email" class="form-label">
+                            <i class="bi bi-envelope"></i> Email
+                        </label>
+                        <input type="email" class="form-control" id="email" placeholder="seu@email.com" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="phone" class="form-label">
+                            <i class="bi bi-telephone"></i> Telefone
+                        </label>
+                        <input type="tel" class="form-control" id="phone" placeholder="(11) 98765-4321" required>
+                    </div>
+
+                    <button type="submit" class="btn btn-register" id="registerBtn">
+                        <i class="bi bi-check-circle-fill"></i> Confirmar Inscrição
+                    </button>
+
+                    <a href="/" class="btn btn-back">
+                        <i class="bi bi-arrow-left"></i> Voltar aos Eventos
+                    </a>
+                </form>
+
+                <!-- Success State -->
+                <div class="success-state" id="successState">
+                    <i class="bi bi-check-circle-fill"></i>
+                    <h3>Inscrição Confirmada!</h3>
+                    <p>Sua inscrição foi realizada com sucesso. Você receberá mais informações por email.</p>
+                    <a href="/" class="btn btn-register">
+                        <i class="bi bi-arrow-left"></i> Voltar aos Eventos
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Get event ID from URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const eventId = urlParams.get('eventId');
+
+        if (!eventId) {
+            window.location.href = '/';
+        }
+
+        let eventData = null;
+
+        // Load event details
+        async function loadEventDetails() {
+            try {
+                const response = await fetch(`/api/events/${eventId}`);
+                const event = await response.json();
+                
+                if (!response.ok) {
+                    throw new Error('Event not found');
+                }
+                
+                eventData = event;
+                displayEventDetails(event);
+                
+                // Show form
+                document.getElementById('loadingState').style.display = 'none';
+                document.getElementById('registrationForm').style.display = 'block';
+            } catch (error) {
+                console.error('Error loading event:', error);
+                document.getElementById('loadingState').innerHTML = `
+                    <div class="alert alert-danger">
+                        <i class="bi bi-exclamation-circle-fill"></i> 
+                        Erro ao carregar evento. O evento pode não existir ou não estar disponível.
+                    </div>
+                    <a href="/" class="btn btn-back">
+                        <i class="bi bi-arrow-left"></i> Voltar aos Eventos
+                    </a>
+                `;
+            }
+        }
+
+        function displayEventDetails(event) {
+            document.getElementById('eventHeader').style.display = 'block';
+            document.getElementById('eventName').textContent = event.name;
+            document.getElementById('eventDescription').textContent = event.description;
+            
+            const badges = `
+                <span class="badge-slot">
+                    <i class="bi bi-people-fill"></i> ${event.availableSlots}/${event.maxParticipants} vagas
+                </span>
+                <span class="event-info-badge">
+                    <i class="bi bi-calendar-event"></i>
+                    ${formatDate(event.date)}
+                </span>
+                <span class="event-info-badge">
+                    <i class="bi bi-geo-alt-fill"></i>
+                    ${escapeHtml(event.location)}
+                </span>
+            `;
+            
+            document.getElementById('eventBadges').innerHTML = badges;
+        }
+
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            return date.toLocaleDateString('pt-BR', { 
+                day: '2-digit', 
+                month: '2-digit', 
+                year: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+        }
+
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        // Format phone number
+        document.getElementById('phone').addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\D/g, '');
+            
+            if (value.length > 11) {
+                value = value.slice(0, 11);
+            }
+            
+            if (value.length > 10) {
+                value = value.replace(/(\d{2})(\d{5})(\d{4})/, '($1) $2-$3');
+            } else if (value.length > 6) {
+                value = value.replace(/(\d{2})(\d{4})(\d{0,4})/, '($1) $2-$3');
+            } else if (value.length > 2) {
+                value = value.replace(/(\d{2})(\d{0,5})/, '($1) $2');
+            } else if (value.length > 0) {
+                value = value.replace(/(\d{0,2})/, '($1');
+            }
+            
+            e.target.value = value;
+        });
+
+        // Handle form submission
+        document.getElementById('registrationForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const firstName = document.getElementById('firstName').value.trim();
+            const lastName = document.getElementById('lastName').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const phone = document.getElementById('phone').value.replace(/\D/g, ''); // Remove formatting
+            
+            const registerBtn = document.getElementById('registerBtn');
+            const registrationAlert = document.getElementById('registrationAlert');
+            
+            // Validation
+            if (!firstName || !lastName || !email || !phone) {
+                registrationAlert.innerHTML = `
+                    <div class="alert alert-warning">
+                        <i class="bi bi-exclamation-triangle-fill"></i> Por favor, preencha todos os campos.
+                    </div>
+                `;
+                return;
+            }
+            
+            if (phone.length < 10) {
+                registrationAlert.innerHTML = `
+                    <div class="alert alert-warning">
+                        <i class="bi bi-exclamation-triangle-fill"></i> Por favor, insira um telefone válido com pelo menos 10 dígitos.
+                    </div>
+                `;
+                return;
+            }
+            
+            registerBtn.disabled = true;
+            registerBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Confirmando...';
+            
+            try {
+                const response = await fetch(`/api/registrations/public/events/${eventId}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        name: firstName,
+                        lastName: lastName,
+                        email: email,
+                        phone: `+55${phone}`
+                    })
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok) {
+                    // Show success message
+                    document.getElementById('registrationForm').style.display = 'none';
+                    document.getElementById('successState').style.display = 'block';
+                } else {
+                    registrationAlert.innerHTML = `
+                        <div class="alert alert-danger">
+                            <i class="bi bi-exclamation-circle-fill"></i> ${data.error || 'Erro ao realizar inscrição.'}
+                        </div>
+                    `;
+                    registerBtn.disabled = false;
+                    registerBtn.innerHTML = '<i class="bi bi-check-circle-fill"></i> Confirmar Inscrição';
+                }
+            } catch (error) {
+                console.error('Registration error:', error);
+                registrationAlert.innerHTML = `
+                    <div class="alert alert-danger">
+                        <i class="bi bi-exclamation-circle-fill"></i> Erro ao conectar ao servidor. Tente novamente.
+                    </div>
+                `;
+                registerBtn.disabled = false;
+                registerBtn.innerHTML = '<i class="bi bi-check-circle-fill"></i> Confirmar Inscrição';
+            }
+        });
+
+        // Load event on page load
+        document.addEventListener('DOMContentLoaded', loadEventDetails);
+    </script>
+</body>
+</html>
