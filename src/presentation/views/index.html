@@ -27,6 +27,7 @@
         body {
             background: var(--light-bg);
             min-height: 100vh;
+            padding-top: 76px;
         }
         
         /* Navbar Styles */
@@ -34,6 +35,11 @@
             background: var(--primary-gradient);
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
             padding: 1rem 0;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1030;
         }
         
         .navbar-brand {
@@ -260,8 +266,17 @@
         }
         
         @media (max-width: 768px) {
+            body {
+                padding-top: 70px;
+            }
+            
+            .navbar-custom {
+                padding: 0.75rem 0;
+            }
+            
             .page-header {
                 text-align: center;
+                padding: 1.5rem;
             }
             
             .page-header h1 {
@@ -272,6 +287,14 @@
             .btn-create {
                 width: 100%;
                 margin-top: 1rem;
+            }
+            
+            .event-card-footer {
+                flex-direction: column;
+            }
+            
+            .btn-detail {
+                margin-bottom: 0.5rem;
             }
         }
     </style>

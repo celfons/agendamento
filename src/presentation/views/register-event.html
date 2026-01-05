@@ -25,6 +25,7 @@
         body {
             background: var(--light-bg);
             min-height: 100vh;
+            padding-top: 76px;
         }
         
         /* Navbar Styles */
@@ -32,6 +33,11 @@
             background: var(--primary-gradient);
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
             padding: 1rem 0;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1030;
         }
         
         .navbar-brand {
@@ -226,12 +232,25 @@
         }
         
         @media (max-width: 768px) {
+            body {
+                padding-top: 70px;
+            }
+            
+            .navbar-custom {
+                padding: 0.75rem 0;
+            }
+            
             .registration-card {
                 padding: 1.5rem;
             }
             
             .event-header {
                 padding: 1.5rem;
+            }
+            
+            .event-info-badge {
+                font-size: 0.85rem;
+                padding: 0.375rem 0.75rem;
             }
         }
     </style>
