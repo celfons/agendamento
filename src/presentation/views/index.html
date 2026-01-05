@@ -113,7 +113,7 @@
                                 <li><i class="bi bi-calendar"></i> ${formatDate(event.date)}</li>
                                 <li><i class="bi bi-geo-alt"></i> ${escapeHtml(event.location)}</li>
                                 <li><i class="bi bi-people"></i> ${event.availableSlots}/${event.maxParticipants} vagas</li>
-                                <li><i class="bi bi-person-badge"></i> ${event.organizers.join(', ')}</li>
+                                <li><i class="bi bi-person-badge"></i> ${event.organizers.map(org => escapeHtml(org)).join(', ')}</li>
                             </ul>
                         </div>
                         <div class="card-footer bg-transparent">
