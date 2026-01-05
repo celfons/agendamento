@@ -95,7 +95,23 @@ NODE_ENV=development
 MONGO_URI=mongodb://localhost:27017/agendamento
 ```
 
-4. Inicie o MongoDB:
+4. **Opção A: Usando Docker Compose (Recomendado)**
+
+Execute tudo com um único comando:
+```bash
+docker-compose up -d
+```
+
+A aplicação estará disponível em `http://localhost:3000` e o MongoDB em `localhost:27017`.
+
+Para parar:
+```bash
+docker-compose down
+```
+
+**Opção B: Instalação Manual**
+
+4.1. Inicie o MongoDB:
 ```bash
 # Se estiver usando Docker:
 docker run -d -p 27017:27017 --name mongodb mongo:latest
@@ -104,12 +120,12 @@ docker run -d -p 27017:27017 --name mongodb mongo:latest
 mongod
 ```
 
-5. Compile o TypeScript:
+4.2. Compile o TypeScript:
 ```bash
 npm run build
 ```
 
-6. Inicie a aplicação:
+4.3. Inicie a aplicação:
 ```bash
 # Desenvolvimento (com hot reload)
 npm run dev
@@ -118,9 +134,27 @@ npm run dev
 npm start
 ```
 
-7. Acesse a aplicação:
+5. Acesse a aplicação:
 ```
 http://localhost:3000
+```
+
+## 🐳 Docker
+
+O projeto inclui configuração Docker para facilitar o deploy:
+
+```bash
+# Build da imagem
+docker build -t agendamento .
+
+# Executar com Docker Compose (inclui MongoDB)
+docker-compose up -d
+
+# Ver logs
+docker-compose logs -f
+
+# Parar
+docker-compose down
 ```
 
 ## 📖 API Endpoints
