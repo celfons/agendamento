@@ -37,10 +37,10 @@ export class App {
     const groupRoutes = new GroupRoutes(groupController);
     this.app.use('/api/groups', groupRoutes.getRouter());
 
-    // Event Registration Routes (protected)
+    // Event Registration Routes (protected) - mount before event routes with specific path
     const eventRegistrationController = Container.getEventRegistrationController();
     const eventRegistrationRoutes = new EventRegistrationRoutes(eventRegistrationController);
-    this.app.use('/api/events', eventRegistrationRoutes.getRouter());
+    this.app.use('/api/registrations', eventRegistrationRoutes.getRouter());
 
     // API Routes (event management)
     const eventController = Container.getEventController();

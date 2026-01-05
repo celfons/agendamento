@@ -14,28 +14,28 @@ export class EventRegistrationRoutes {
     // All registration routes require authentication
     this.router.use(AuthMiddleware.authenticate);
 
+    // List user's registrations
+    this.router.get(
+      '/my-registrations',
+      (req, res) => this.eventRegistrationController.listByUser(req, res)
+    );
+
     // Register to an event
     this.router.post(
-      '/:eventId/register',
+      '/events/:eventId',
       (req, res) => this.eventRegistrationController.register(req, res)
     );
 
     // Unregister from an event
     this.router.delete(
-      '/:eventId/register',
+      '/events/:eventId',
       (req, res) => this.eventRegistrationController.unregister(req, res)
     );
 
     // List registrations for an event
     this.router.get(
-      '/:eventId/registrations',
+      '/events/:eventId',
       (req, res) => this.eventRegistrationController.listByEvent(req, res)
-    );
-
-    // List user's registrations
-    this.router.get(
-      '/my-registrations',
-      (req, res) => this.eventRegistrationController.listByUser(req, res)
     );
   }
 

@@ -42,6 +42,9 @@ export class MongoEventRepository implements IEventRepository {
       maxParticipants: doc.maxParticipants,
       availableSlots: doc.availableSlots,
       organizers: doc.organizers,
+      createdBy: doc.createdBy?.toString(),
+      groupId: doc.groupId?.toString(),
+      isPublic: doc.isPublic,
       createdAt: doc.createdAt,
       updatedAt: doc.updatedAt,
     };
