@@ -18,37 +18,13 @@ export class MongoEventRegistrationRepository implements IEventRegistrationRepos
     return registrationDocs.map(doc => this.mapToEntity(doc));
   }
 
-  async findByUserId(userId: string): Promise<EventRegistration[]> {
-    const registrationDocs = await EventRegistrationModel.find({ userId }).exec();
-    return registrationDocs.map(doc => this.mapToEntity(doc));
-  }
-
-  async findByClientId(clientId: string): Promise<EventRegistration[]> {
-    const registrationDocs = await EventRegistrationModel.find({ clientId }).exec();
-    return registrationDocs.map(doc => this.mapToEntity(doc));
-  }
-
-  async findByEventAndUser(eventId: string, userId: string): Promise<EventRegistration | null> {
-    const registrationDoc = await EventRegistrationModel.findOne({ eventId, userId }).exec();
+  async findByEventAndPhone(eventId: string, phone: string): Promise<EventRegistration | null> {
+    const registrationDoc = await EventRegistrationModel.findOne({ eventId, phone }).exec();
     return registrationDoc ? this.mapToEntity(registrationDoc) : null;
   }
 
-  async findByEventAndClient(eventId: string, clientId: string): Promise<EventRegistration | null> {
-    const registrationDoc = await EventRegistrationModel.findOne({ eventId, clientId }).exec();
-    return registrationDoc ? this.mapToEntity(registrationDoc) : null;
-  }
-
-  async update(id: string, registration: Partial<EventRegistration>): Promise<EventRegistration | null> {
-    const registrationDoc = await EventRegistrationModel.findByIdAndUpdate(
-      id, 
-      registration, 
-      { new: true }
-    ).exec();
-    return registrationDoc ? this.mapToEntity(registrationDoc) : null;
-  }
-
-  async delete(id: string): Promise<boolean> {
-    const result = await EventRegistrationModel.findByIdAndDelete(id).exec();
+  async deleteByEventAndPhone(eventId: string, phone: string): Promise<boolean> {
+    const result = await EventRegistrationModel.findOneAndDelete({ eventId, phone }).exec();
     return result !== null;
   }
 
@@ -60,11 +36,9 @@ export class MongoEventRegistrationRepository implements IEventRegistrationRepos
     return {
       id: doc._id.toString(),
       eventId: doc.eventId.toString(),
-      userId: doc.userId ? doc.userId.toString() : undefined,
-      clientId: doc.clientId ? doc.clientId.toString() : undefined,
-      status: doc.status,
-      registeredAt: doc.createdAt,
-      updatedAt: doc.updatedAt
+      name: doc.name,
+      phone: doc.phone,
+      registeredAt: doc.createdAt
     };
   }
 }

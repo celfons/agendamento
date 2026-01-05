@@ -9,7 +9,7 @@ export class MongoEventRepository implements IEventRepository {
   }
 
   async findAll(): Promise<Event[]> {
-    const events = await EventModel.find().sort({ date: 1 });
+    const events = await EventModel.find().sort({ startTime: 1 });
     return events.map(this.mapToEntity);
   }
 
@@ -35,16 +35,13 @@ export class MongoEventRepository implements IEventRepository {
   private mapToEntity(doc: IEventDocument): Event {
     return {
       id: doc._id.toString(),
-      name: doc.name,
+      title: doc.title,
       description: doc.description,
-      date: doc.date,
+      startTime: doc.startTime,
+      endTime: doc.endTime,
       location: doc.location,
       maxParticipants: doc.maxParticipants,
       availableSlots: doc.availableSlots,
-      organizers: doc.organizers,
-      createdBy: doc.createdBy?.toString(),
-      groupId: doc.groupId?.toString(),
-      isPublic: doc.isPublic,
       createdAt: doc.createdAt,
       updatedAt: doc.updatedAt,
     };

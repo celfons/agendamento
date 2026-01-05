@@ -3,465 +3,443 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Detalhes do Evento - EventPro</title>
+    <title>Detalhes da Atividade</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            --primary-color: #667eea;
-            --secondary-color: #764ba2;
-            --success-color: #10b981;
-            --light-bg: #f8fafc;
-            --card-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-            --navbar-height: 76px;
-            --navbar-height-mobile: 70px;
+            --primary-color: #4f46e5;
+            --primary-dark: #4338ca;
+            --primary-light: #6366f1;
+            --secondary-color: #10b981;
+            --accent-color: #f59e0b;
+            --danger-color: #ef4444;
+            --text-primary: #1f2937;
+            --text-secondary: #6b7280;
+            --text-light: #9ca3af;
+            --bg-primary: #ffffff;
+            --bg-secondary: #f9fafb;
+            --bg-tertiary: #f3f4f6;
+            --border-color: #e5e7eb;
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
         }
         
         * {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
         }
         
         body {
-            background: var(--light-bg);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
-            padding-top: var(--navbar-height);
+            padding-top: 76px;
+            position: relative;
         }
         
-        /* Navbar Styles */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 20% 50%, rgba(120, 119, 198, 0.3), transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(139, 92, 246, 0.3), transparent 50%),
+                radial-gradient(circle at 40% 20%, rgba(79, 70, 229, 0.2), transparent 50%);
+            pointer-events: none;
+            z-index: 0;
+        }
+        
+        .content-wrapper {
+            position: relative;
+            z-index: 1;
+        }
+        
         .navbar-custom {
-            background: var(--primary-gradient);
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            box-shadow: var(--shadow-lg);
             padding: 1rem 0;
             position: fixed;
             top: 0;
             left: 0;
             right: 0;
             z-index: 1030;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
         }
         
         .navbar-brand {
-            font-weight: 700;
+            font-weight: 800;
             font-size: 1.5rem;
-            color: white !important;
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-light) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
             display: flex;
             align-items: center;
-            gap: 0.5rem;
+            gap: 0.75rem;
+            letter-spacing: -0.5px;
         }
         
         .navbar-brand i {
-            font-size: 1.8rem;
+            font-size: 2rem;
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-light) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
         
-        .nav-link {
-            color: rgba(255, 255, 255, 0.9) !important;
-            font-weight: 500;
-            padding: 0.5rem 1rem !important;
-            border-radius: 8px;
-            transition: all 0.3s ease;
-        }
-        
-        .nav-link:hover, .nav-link.active {
-            background: rgba(255, 255, 255, 0.2);
-            color: white !important;
-        }
-        
-        /* Event Detail Container */
-        .event-detail-container {
-            background: white;
-            border-radius: 20px;
-            box-shadow: var(--card-shadow);
+        .detail-container {
+            background: rgba(255, 255, 255, 0.98);
+            border-radius: 24px;
+            box-shadow: var(--shadow-xl);
             padding: 0;
             margin-top: 2rem;
             margin-bottom: 3rem;
             overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            backdrop-filter: blur(20px);
         }
         
-        .event-header {
-            background: var(--primary-gradient);
+        .detail-header {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-light) 100%);
             color: white;
-            padding: 3rem;
+            padding: 3rem 2.5rem;
+            position: relative;
+            overflow: hidden;
         }
         
-        .event-header h1 {
+        .detail-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            transform: translate(30%, -30%);
+        }
+        
+        .detail-title {
             font-size: 2.5rem;
-            font-weight: 700;
-            margin: 0 0 1rem 0;
-            display: flex;
+            font-weight: 800;
+            margin-bottom: 1.5rem;
+            position: relative;
+            z-index: 1;
+            letter-spacing: -0.5px;
+        }
+        
+        .badge-slots {
+            display: inline-flex;
             align-items: center;
-            gap: 1rem;
-            flex-wrap: wrap;
-        }
-        
-        .event-header-actions {
-            display: flex;
-            gap: 0.75rem;
-            flex-wrap: wrap;
-        }
-        
-        .btn-edit {
-            background: white;
-            color: var(--primary-color);
-            border: none;
-            font-weight: 600;
-            padding: 0.75rem 1.5rem;
-            border-radius: 10px;
-            transition: all 0.3s ease;
-        }
-        
-        .btn-edit:hover {
-            background: #f8fafc;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            gap: 0.625rem;
+            padding: 0.875rem 1.75rem;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 1.125rem;
+            background: rgba(255, 255, 255, 0.25);
+            border: 2px solid rgba(255, 255, 255, 0.4);
+            backdrop-filter: blur(10px);
+            box-shadow: var(--shadow-md);
+            position: relative;
+            z-index: 1;
         }
         
         .btn-back {
             background: rgba(255, 255, 255, 0.2);
-            color: white;
             border: 2px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            padding: 0.875rem 1.75rem;
+            border-radius: 12px;
             font-weight: 600;
-            padding: 0.75rem 1.5rem;
-            border-radius: 10px;
             transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            text-decoration: none;
+            backdrop-filter: blur(10px);
         }
         
         .btn-back:hover {
             background: rgba(255, 255, 255, 0.3);
+            border-color: rgba(255, 255, 255, 0.5);
             color: white;
+            transform: translateY(-2px);
         }
         
-        .event-body {
-            padding: 3rem;
+        .detail-body {
+            padding: 3rem 2.5rem;
         }
         
-        .info-section {
+        .section-title {
+            font-size: 0.875rem;
+            font-weight: 700;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .section-title i {
+            color: var(--primary-color);
+            font-size: 1.125rem;
+        }
+        
+        .description-text {
+            color: var(--text-primary);
+            font-size: 1.125rem;
+            line-height: 1.8;
             margin-bottom: 2.5rem;
         }
         
-        .info-section-title {
-            font-size: 0.875rem;
-            font-weight: 700;
-            color: #64748b;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: 0.75rem;
-        }
-        
-        .info-content {
-            font-size: 1.1rem;
-            color: #1e293b;
-            line-height: 1.6;
-        }
-        
-        .info-item {
-            background: #f8fafc;
+        .info-card {
+            background: var(--bg-secondary);
             padding: 1.5rem;
-            border-radius: 12px;
-            margin-bottom: 1rem;
+            border-radius: 16px;
+            margin-bottom: 1.25rem;
+            border: 1px solid var(--border-color);
+            transition: all 0.2s ease;
         }
         
-        .info-item-icon {
-            width: 40px;
-            height: 40px;
-            background: var(--primary-gradient);
-            border-radius: 10px;
+        .info-card:hover {
+            background: var(--bg-tertiary);
+            border-color: var(--primary-light);
+        }
+        
+        .info-card-icon {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-light) 100%);
+            border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
             color: white;
-            font-size: 1.2rem;
-            margin-right: 1rem;
+            font-size: 1.25rem;
+            flex-shrink: 0;
+            box-shadow: var(--shadow-md);
         }
         
-        .capacity-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            background: var(--success-color);
-            color: white;
-            padding: 0.75rem 1.5rem;
-            border-radius: 50px;
+        .info-card-content {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+        
+        .info-card-label {
+            font-size: 0.75rem;
             font-weight: 600;
-            font-size: 1.1rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
         
-        .organizer-badge {
-            display: inline-block;
-            background: var(--primary-gradient);
-            color: white;
-            padding: 0.5rem 1rem;
+        .info-card-value {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+        
+        .registration-section {
+            background: linear-gradient(135deg, rgba(79, 70, 229, 0.05) 0%, rgba(99, 102, 241, 0.05) 100%);
+            padding: 2.5rem;
             border-radius: 20px;
-            margin-right: 0.5rem;
-            margin-bottom: 0.5rem;
-            font-weight: 500;
+            border: 2px dashed var(--border-color);
+            position: relative;
+            overflow: hidden;
         }
         
-        .progress-custom {
-            height: 12px;
-            border-radius: 10px;
-            background: #e2e8f0;
+        .registration-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary-color) 0%, var(--primary-light) 100%);
         }
         
-        .progress-bar-custom {
-            background: var(--success-color);
-            border-radius: 10px;
-        }
-        
-        .timestamp {
-            color: #94a3b8;
-            font-size: 0.9rem;
-            padding: 1rem;
-            background: #f8fafc;
-            border-radius: 8px;
-            margin-top: 2rem;
-        }
-        
-        /* Modal Styles */
-        .modal-content {
-            border-radius: 20px;
-            border: none;
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
-        }
-        
-        .modal-header {
-            background: var(--primary-gradient);
-            color: white;
-            border-radius: 20px 20px 0 0;
-            padding: 1.5rem 2rem;
-            border: none;
-        }
-        
-        .modal-title {
-            font-weight: 700;
+        .registration-title {
             font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
         }
         
-        .btn-close {
-            filter: brightness(0) invert(1);
-            opacity: 0.8;
-        }
-        
-        .btn-close:hover {
-            opacity: 1;
-        }
-        
-        .modal-body {
-            padding: 2rem;
-        }
-        
-        .modal-footer {
-            padding: 1.5rem 2rem;
-            border-top: 1px solid #e2e8f0;
+        .registration-subtitle {
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+            font-size: 1rem;
         }
         
         .form-label {
             font-weight: 600;
-            color: #334155;
-            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+            margin-bottom: 0.625rem;
+            font-size: 0.95rem;
         }
         
         .form-control {
-            border: 2px solid #e2e8f0;
-            border-radius: 10px;
-            padding: 0.75rem 1rem;
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            padding: 0.875rem 1.25rem;
+            font-size: 1rem;
+            transition: all 0.2s ease;
         }
         
         .form-control:focus {
             border-color: var(--primary-color);
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+            box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.1);
+            outline: none;
         }
         
-        .btn-primary-custom {
-            background: var(--primary-gradient);
+        .btn-register {
+            background: linear-gradient(135deg, var(--secondary-color) 0%, #059669 100%);
+            color: white;
             border: none;
+            padding: 1.125rem 2rem;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 1.125rem;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+            box-shadow: var(--shadow-lg);
+            letter-spacing: 0.3px;
+        }
+        
+        .btn-register:hover:not(:disabled) {
+            transform: translateY(-3px);
+            box-shadow: 0 20px 25px -5px rgba(16, 185, 129, 0.3);
             color: white;
-            font-weight: 600;
-            padding: 0.75rem 1.5rem;
-            border-radius: 10px;
-            transition: all 0.3s ease;
         }
         
-        .btn-primary-custom:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(102, 126, 234, 0.3);
+        .btn-register:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+        
+        .btn-unregister {
+            background: linear-gradient(135deg, var(--danger-color) 0%, #dc2626 100%);
+            color: white;
+            border: none;
+            padding: 1.125rem 2rem;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 1.125rem;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+            box-shadow: var(--shadow-lg);
+            letter-spacing: 0.3px;
+        }
+        
+        .btn-unregister:hover:not(:disabled) {
+            transform: translateY(-3px);
+            box-shadow: 0 20px 25px -5px rgba(239, 68, 68, 0.3);
             color: white;
         }
         
-        .btn-secondary-custom {
-            background: white;
-            border: 2px solid #e2e8f0;
-            color: #64748b;
-            font-weight: 600;
-            padding: 0.75rem 1.5rem;
-            border-radius: 10px;
-            transition: all 0.3s ease;
+        .divider {
+            height: 2px;
+            background: linear-gradient(90deg, transparent 0%, var(--border-color) 50%, transparent 100%);
+            margin: 2.5rem 0;
+            position: relative;
         }
         
-        .btn-secondary-custom:hover {
-            border-color: #cbd5e1;
-            background: #f8fafc;
-            color: #475569;
+        .divider::after {
+            content: 'OU';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: var(--bg-secondary);
+            padding: 0.5rem 1rem;
+            color: var(--text-secondary);
+            font-weight: 600;
+            font-size: 0.875rem;
+            border-radius: 50px;
+        }
+        
+        .unregister-section {
+            background: rgba(239, 68, 68, 0.05);
+            padding: 2rem;
+            border-radius: 16px;
+            border: 2px dashed rgba(239, 68, 68, 0.2);
+        }
+        
+        .unregister-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.625rem;
         }
         
         @media (max-width: 768px) {
             body {
-                padding-top: var(--navbar-height-mobile);
+                padding-top: 70px;
             }
             
-            .navbar-custom {
-                padding: 0.75rem 0;
-            }
-            
-            .event-header {
+            .detail-header {
                 padding: 2rem 1.5rem;
             }
             
-            .event-header h1 {
+            .detail-title {
                 font-size: 1.75rem;
             }
             
-            .event-body {
+            .detail-body {
                 padding: 2rem 1.5rem;
             }
             
-            .event-header-actions {
-                width: 100%;
-                margin-top: 1rem;
-            }
-            
-            .btn-edit,
-            .btn-back {
-                flex: 1;
-            }
-            
-            .modal-dialog {
-                margin: 0.5rem;
-            }
-            
-            .modal-body {
+            .registration-section {
                 padding: 1.5rem;
             }
         }
     </style>
 </head>
 <body>
-    <!-- Navigation -->
     <nav class="navbar navbar-expand-lg navbar-custom">
         <div class="container">
             <a class="navbar-brand" href="/">
                 <i class="bi bi-calendar-event-fill"></i>
-                <span>EventPro</span>
+                <span>Agendamento de Atividades</span>
             </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-                    style="background: rgba(255,255,255,0.2); border: none;">
-                <span class="navbar-toggler-icon" style="filter: brightness(0) invert(1);"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="/">
-                            <i class="bi bi-grid-fill"></i> Eventos
-                        </a>
-                    </li>
-                    <li class="nav-item" id="navCreateEvent" style="display: none;">
-                        <a class="nav-link" href="/create">
-                            <i class="bi bi-plus-circle-fill"></i> Criar Evento
-                        </a>
-                    </li>
-                    <li class="nav-item" id="navUsers" style="display: none;">
-                        <a class="nav-link" href="/users">
-                            <i class="bi bi-people-fill"></i> Usuários
-                        </a>
-                    </li>
-                    <li class="nav-item" id="navLogin">
-                        <a class="nav-link" href="/login">
-                            <i class="bi bi-box-arrow-in-right"></i> Login
-                        </a>
-                    </li>
-                    <li class="nav-item" id="navLogout" style="display: none;">
-                        <a class="nav-link" href="#" onclick="handleLogout(event)">
-                            <i class="bi bi-box-arrow-right"></i> Sair
-                        </a>
-                    </li>
-                </ul>
-            </div>
         </div>
     </nav>
 
-    <!-- Event Details -->
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-lg-10">
-                <div class="event-detail-container" id="event-container">
-                    <div class="text-center" style="padding: 4rem;">
-                        <div class="spinner-border" style="color: var(--primary-color); width: 3rem; height: 3rem;" role="status">
-                            <span class="visually-hidden">Carregando...</span>
+    <div class="content-wrapper">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-10">
+                    <div class="detail-container" id="detail-container">
+                        <div class="text-center" style="padding: 4rem;">
+                            <div class="spinner-border" style="color: var(--primary-color); width: 3rem; height: 3rem;" role="status">
+                                <span class="visually-hidden">Carregando...</span>
+                            </div>
+                            <p class="mt-3" style="color: var(--text-secondary); font-weight: 500;">Carregando detalhes da atividade...</p>
                         </div>
-                        <p class="mt-3 text-muted">Carregando detalhes do evento...</p>
                     </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Edit Modal -->
-    <div class="modal fade" id="editModal" tabindex="-1">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title"><i class="bi bi-pencil"></i> Editar Evento</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
-                <div class="modal-body">
-                    <form id="edit-form">
-                        <div class="mb-3">
-                            <label for="edit-name" class="form-label">Nome do Evento</label>
-                            <input type="text" class="form-control" id="edit-name">
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="edit-description" class="form-label">Descrição</label>
-                            <textarea class="form-control" id="edit-description" rows="4"></textarea>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-md-6 mb-3">
-                                <label for="edit-date" class="form-label">Data e Hora</label>
-                                <input type="datetime-local" class="form-control" id="edit-date">
-                            </div>
-
-                            <div class="col-md-6 mb-3">
-                                <label for="edit-location" class="form-label">Local</label>
-                                <input type="text" class="form-control" id="edit-location">
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-md-6 mb-3">
-                                <label for="edit-maxParticipants" class="form-label">Número Máximo de Participantes</label>
-                                <input type="number" class="form-control" id="edit-maxParticipants" min="1">
-                            </div>
-
-                            <div class="col-md-6 mb-3">
-                                <label for="edit-availableSlots" class="form-label">Vagas Disponíveis</label>
-                                <input type="number" class="form-control" id="edit-availableSlots" min="0">
-                            </div>
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="edit-organizers" class="form-label">Organizadores (separados por vírgula)</label>
-                            <input type="text" class="form-control" id="edit-organizers">
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary-custom" data-bs-dismiss="modal">
-                        <i class="bi bi-x-circle-fill"></i> Cancelar
-                    </button>
-                    <button type="button" class="btn btn-primary-custom" onclick="saveChanges()">
-                        <i class="bi bi-check-circle-fill"></i> Salvar Alterações
-                    </button>
                 </div>
             </div>
         </div>
@@ -469,202 +447,251 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        let currentEvent = null;
-        let editModal = null;
+        let currentActivity = null;
 
-        async function loadEvent() {
-            const eventId = window.location.pathname.split('/').pop();
+        async function loadActivity() {
+            const activityId = window.location.pathname.split('/').pop();
             
             try {
-                const response = await fetch(`/api/events/${eventId}`);
+                const response = await fetch(`/api/events/${activityId}`);
                 
                 if (!response.ok) {
-                    throw new Error('Event not found');
+                    throw new Error('Activity not found');
                 }
                 
-                currentEvent = await response.json();
-                displayEvent(currentEvent);
+                currentActivity = await response.json();
+                displayActivity(currentActivity);
             } catch (error) {
-                console.error('Error loading event:', error);
-                document.getElementById('event-container').innerHTML = `
-                    <div class="alert alert-danger" role="alert">
-                        <i class="bi bi-exclamation-triangle"></i> Erro ao carregar evento.
-                        <a href="/" class="alert-link">Voltar para lista de eventos</a>
+                console.error('Error loading activity:', error);
+                document.getElementById('detail-container').innerHTML = `
+                    <div class="p-5 text-center">
+                        <div class="alert alert-danger" role="alert" style="border-radius: 16px; border: none; background: rgba(239, 68, 68, 0.1); color: #dc2626; border-left: 4px solid #ef4444;">
+                            <i class="bi bi-exclamation-triangle-fill"></i>
+                            <strong> Erro ao carregar atividade.</strong>
+                            <a href="/" class="alert-link">Voltar para lista de atividades</a>
+                        </div>
                     </div>
                 `;
             }
         }
 
-        function displayEvent(event) {
-            const slotsPercentage = (event.availableSlots / event.maxParticipants) * 100;
+        function displayActivity(activity) {
+            const hasSlots = activity.availableSlots > 0;
             
-            document.getElementById('event-container').innerHTML = `
-                <div class="event-header">
-                    <div class="d-flex justify-content-between align-items-start flex-wrap">
-                        <h1><i class="bi bi-calendar-event-fill"></i> ${escapeHtml(event.name)}</h1>
-                        <div class="event-header-actions">
-                            <button onclick="openEditModal()" class="btn-edit">
-                                <i class="bi bi-pencil-fill"></i> Editar
-                            </button>
-                            <a href="/" class="btn-back">
-                                <i class="bi bi-arrow-left-circle-fill"></i> Voltar
-                            </a>
+            document.getElementById('detail-container').innerHTML = `
+                <div class="detail-header">
+                    <div class="d-flex justify-content-between align-items-start flex-wrap gap-3">
+                        <div>
+                            <h1 class="detail-title">${escapeHtml(activity.title)}</h1>
+                            <span class="badge-slots">
+                                <i class="bi bi-people-fill"></i>
+                                <span>${activity.availableSlots} / ${activity.maxParticipants} vagas disponíveis</span>
+                            </span>
                         </div>
+                        <a href="/" class="btn-back">
+                            <i class="bi bi-arrow-left-circle-fill"></i>
+                            <span>Voltar</span>
+                        </a>
                     </div>
                 </div>
 
-                <div class="event-body">
+                <div class="detail-body">
                     <div class="row">
-                        <div class="col-md-8">
-                            <div class="info-section">
-                                <div class="info-section-title">
-                                    <i class="bi bi-file-text-fill"></i> Descrição
+                        <div class="col-lg-7">
+                            <div class="mb-4">
+                                <div class="section-title">
+                                    <i class="bi bi-file-text-fill"></i>
+                                    <span>Descrição</span>
                                 </div>
-                                <div class="info-content">${escapeHtml(event.description)}</div>
+                                <p class="description-text">${escapeHtml(activity.description)}</p>
                             </div>
 
-                            <div class="row">
+                            <div class="row g-3">
                                 <div class="col-md-6">
-                                    <div class="info-item">
-                                        <div class="d-flex align-items-center">
-                                            <div class="info-item-icon">
-                                                <i class="bi bi-calendar-event"></i>
-                                            </div>
-                                            <div>
-                                                <div class="info-section-title mb-1">Data e Hora</div>
-                                                <div class="info-content">${formatDate(event.date)}</div>
-                                            </div>
+                                    <div class="info-card d-flex align-items-center gap-3">
+                                        <div class="info-card-icon">
+                                            <i class="bi bi-clock"></i>
+                                        </div>
+                                        <div class="info-card-content">
+                                            <div class="info-card-label">Horário de Início</div>
+                                            <div class="info-card-value">${formatDateTime(activity.startTime)}</div>
                                         </div>
                                     </div>
                                 </div>
                                 
                                 <div class="col-md-6">
-                                    <div class="info-item">
-                                        <div class="d-flex align-items-center">
-                                            <div class="info-item-icon">
-                                                <i class="bi bi-geo-alt-fill"></i>
-                                            </div>
-                                            <div>
-                                                <div class="info-section-title mb-1">Local</div>
-                                                <div class="info-content">${escapeHtml(event.location)}</div>
-                                            </div>
+                                    <div class="info-card d-flex align-items-center gap-3">
+                                        <div class="info-card-icon">
+                                            <i class="bi bi-clock-fill"></i>
+                                        </div>
+                                        <div class="info-card-content">
+                                            <div class="info-card-label">Horário de Término</div>
+                                            <div class="info-card-value">${formatDateTime(activity.endTime)}</div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
+
+                            <div class="mt-3">
+                                <div class="info-card d-flex align-items-center gap-3">
+                                    <div class="info-card-icon">
+                                        <i class="bi bi-geo-alt-fill"></i>
+                                    </div>
+                                    <div class="info-card-content">
+                                        <div class="info-card-label">Local</div>
+                                        <div class="info-card-value">${escapeHtml(activity.location)}</div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
 
-                        <div class="col-md-4">
-                            <div class="info-section">
-                                <div class="info-section-title">
-                                    <i class="bi bi-people-fill"></i> Capacidade
-                                </div>
-                                <div class="text-center mb-3">
-                                    <div class="capacity-badge">
-                                        <i class="bi bi-ticket-perforated-fill"></i>
-                                        <span>${event.availableSlots} / ${event.maxParticipants}</span>
+                        <div class="col-lg-5 mt-4 mt-lg-0">
+                            ${hasSlots ? `
+                            <div class="registration-section">
+                                <h3 class="registration-title">
+                                    <i class="bi bi-person-plus-fill"></i>
+                                    <span>Inscrever-se</span>
+                                </h3>
+                                <p class="registration-subtitle">Preencha seus dados para confirmar sua participação nesta atividade.</p>
+                                
+                                <form id="registration-form" onsubmit="handleRegister(event)">
+                                    <div class="mb-3">
+                                        <label for="name" class="form-label">Nome Completo *</label>
+                                        <input type="text" class="form-control" id="name" placeholder="Digite seu nome completo" required>
                                     </div>
-                                    <p class="text-muted mt-2 mb-2">vagas disponíveis</p>
-                                </div>
-                                <div class="progress-custom">
-                                    <div class="progress-bar-custom" role="progressbar" 
-                                         style="width: ${slotsPercentage}%" aria-valuenow="${slotsPercentage}" 
-                                         aria-valuemin="0" aria-valuemax="100"></div>
-                                </div>
-                            </div>
 
-                            <div class="info-section">
-                                <div class="info-section-title">
-                                    <i class="bi bi-person-badge-fill"></i> Organizadores
-                                </div>
-                                <div>
-                                    ${event.organizers.map(org => `
-                                        <span class="organizer-badge">
-                                            <i class="bi bi-person-fill"></i> ${escapeHtml(org)}
-                                        </span>
-                                    `).join('')}
+                                    <div class="mb-4">
+                                        <label for="phone" class="form-label">Telefone *</label>
+                                        <input type="tel" class="form-control" id="phone" 
+                                               placeholder="(00) 00000-0000" required>
+                                        <small class="text-muted">Formato: (00) 00000-0000</small>
+                                    </div>
+
+                                    <button type="submit" class="btn-register" id="btn-register">
+                                        <i class="bi bi-check-circle-fill"></i>
+                                        <span>Confirmar Inscrição</span>
+                                    </button>
+                                </form>
+                                
+                                <div class="divider"></div>
+                                
+                                <div class="unregister-section">
+                                    <h5 class="unregister-title">
+                                        <i class="bi bi-person-x-fill"></i>
+                                        <span>Já está inscrito?</span>
+                                    </h5>
+                                    <form id="unregister-form" onsubmit="handleUnregister(event)">
+                                        <div class="mb-3">
+                                            <label for="unregister-phone" class="form-label">Telefone *</label>
+                                            <input type="tel" class="form-control" id="unregister-phone" 
+                                                   placeholder="(00) 00000-0000" required>
+                                        </div>
+                                        <button type="submit" class="btn-unregister" id="btn-unregister">
+                                            <i class="bi bi-x-circle-fill"></i>
+                                            <span>Cancelar Inscrição</span>
+                                        </button>
+                                    </form>
                                 </div>
                             </div>
+                            ` : `
+                            <div class="alert alert-warning" style="border-radius: 16px; border: none; background: rgba(245, 158, 11, 0.1); color: #d97706; border-left: 4px solid #f59e0b;">
+                                <h5 class="alert-heading"><i class="bi bi-exclamation-triangle-fill"></i> Atividade Lotada</h5>
+                                <p class="mb-0">Não há mais vagas disponíveis para esta atividade.</p>
+                            </div>
+                            `}
                         </div>
                     </div>
-
-                    ${event.createdAt ? `
-                        <div class="timestamp">
-                            <i class="bi bi-clock-fill"></i> Criado em: ${formatDate(event.createdAt)}
-                            ${event.updatedAt && event.updatedAt !== event.createdAt ? 
-                                ` • Atualizado em: ${formatDate(event.updatedAt)}` : ''}
-                        </div>
-                    ` : ''}
                 </div>
             `;
         }
 
-        function openEditModal() {
-            if (!currentEvent) return;
-
-            // Populate form
-            document.getElementById('edit-name').value = currentEvent.name;
-            document.getElementById('edit-description').value = currentEvent.description;
-            document.getElementById('edit-date').value = formatDateForInput(currentEvent.date);
-            document.getElementById('edit-location').value = currentEvent.location;
-            document.getElementById('edit-maxParticipants').value = currentEvent.maxParticipants;
-            document.getElementById('edit-availableSlots').value = currentEvent.availableSlots;
-            document.getElementById('edit-organizers').value = currentEvent.organizers.join(', ');
-
-            editModal = new bootstrap.Modal(document.getElementById('editModal'));
-            editModal.show();
-        }
-
-        async function saveChanges() {
-            const organizersInput = document.getElementById('edit-organizers').value;
-            const organizersArray = organizersInput.split(',').map(org => org.trim()).filter(org => org);
-
-            const updatedData = {
-                name: document.getElementById('edit-name').value,
-                description: document.getElementById('edit-description').value,
-                date: document.getElementById('edit-date').value,
-                location: document.getElementById('edit-location').value,
-                maxParticipants: parseInt(document.getElementById('edit-maxParticipants').value),
-                availableSlots: parseInt(document.getElementById('edit-availableSlots').value),
-                organizers: organizersArray
-            };
-
+        async function handleRegister(event) {
+            event.preventDefault();
+            
+            const name = document.getElementById('name').value.trim();
+            const phone = document.getElementById('phone').value.trim();
+            const button = document.getElementById('btn-register');
+            
+            if (!name || !phone) {
+                alert('Por favor, preencha todos os campos obrigatórios.');
+                return;
+            }
+            
+            button.disabled = true;
+            button.innerHTML = '<span class="spinner-border spinner-border-sm"></span><span>Processando...</span>';
+            
             try {
-                const response = await fetch(`/api/events/${currentEvent.id}`, {
-                    method: 'PUT',
+                const response = await fetch(`/api/registrations/${currentActivity.id}`, {
+                    method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify(updatedData)
+                    body: JSON.stringify({ name, phone })
                 });
-
+                
+                const data = await response.json();
+                
                 if (response.ok) {
-                    currentEvent = await response.json();
-                    displayEvent(currentEvent);
-                    editModal.hide();
-                    
-                    // Show success message
-                    const alertDiv = document.createElement('div');
-                    alertDiv.className = 'alert alert-success alert-dismissible fade show';
-                    alertDiv.innerHTML = `
-                        <i class="bi bi-check-circle"></i> Evento atualizado com sucesso!
-                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-                    `;
-                    document.getElementById('event-container').insertBefore(
-                        alertDiv, 
-                        document.getElementById('event-container').firstChild
-                    );
+                    alert('✅ Inscrição realizada com sucesso!');
+                    document.getElementById('registration-form').reset();
+                    await loadActivity();
                 } else {
-                    const error = await response.json();
-                    alert('Erro: ' + (error.error || 'Erro ao atualizar evento'));
+                    alert('❌ Erro: ' + (data.error || 'Não foi possível realizar a inscrição.'));
                 }
             } catch (error) {
                 console.error('Error:', error);
-                alert('Erro ao atualizar evento. Por favor, tente novamente.');
+                alert('❌ Erro ao processar inscrição. Por favor, tente novamente.');
+            } finally {
+                button.disabled = false;
+                button.innerHTML = '<i class="bi bi-check-circle-fill"></i><span>Confirmar Inscrição</span>';
             }
         }
 
-        function formatDate(dateString) {
+        async function handleUnregister(event) {
+            event.preventDefault();
+            
+            const phone = document.getElementById('unregister-phone').value.trim();
+            const button = document.getElementById('btn-unregister');
+            
+            if (!phone) {
+                alert('Por favor, informe seu telefone.');
+                return;
+            }
+            
+            if (!confirm('Tem certeza que deseja cancelar sua inscrição?')) {
+                return;
+            }
+            
+            button.disabled = true;
+            button.innerHTML = '<span class="spinner-border spinner-border-sm"></span><span>Processando...</span>';
+            
+            try {
+                const response = await fetch(`/api/registrations/${currentActivity.id}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ phone })
+                });
+                
+                if (response.ok) {
+                    alert('✅ Inscrição cancelada com sucesso!');
+                    document.getElementById('unregister-form').reset();
+                    await loadActivity();
+                } else {
+                    const data = await response.json();
+                    alert('❌ Erro: ' + (data.error || 'Não foi possível cancelar a inscrição.'));
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('❌ Erro ao processar cancelamento. Por favor, tente novamente.');
+            } finally {
+                button.disabled = false;
+                button.innerHTML = '<i class="bi bi-x-circle-fill"></i><span>Cancelar Inscrição</span>';
+            }
+        }
+
+        function formatDateTime(dateString) {
             const date = new Date(dateString);
             return date.toLocaleDateString('pt-BR', { 
                 day: '2-digit', 
@@ -675,50 +702,13 @@
             });
         }
 
-        function formatDateForInput(dateString) {
-            const date = new Date(dateString);
-            const year = date.getFullYear();
-            const month = String(date.getMonth() + 1).padStart(2, '0');
-            const day = String(date.getDate()).padStart(2, '0');
-            const hours = String(date.getHours()).padStart(2, '0');
-            const minutes = String(date.getMinutes()).padStart(2, '0');
-            return `${year}-${month}-${day}T${hours}:${minutes}`;
-        }
-
         function escapeHtml(text) {
             const div = document.createElement('div');
             div.textContent = text;
             return div.innerHTML;
         }
 
-        function handleLogout(event) {
-            event.preventDefault();
-            localStorage.removeItem('token');
-            localStorage.removeItem('user');
-            window.location.href = '/login';
-        }
-
-        function updateNavigation() {
-            const authenticated = localStorage.getItem('token');
-            const user = authenticated ? JSON.parse(localStorage.getItem('user') || '{}') : null;
-            
-            // Show/hide navigation items based on authentication
-            document.getElementById('navLogin').style.display = authenticated ? 'none' : 'block';
-            document.getElementById('navLogout').style.display = authenticated ? 'block' : 'none';
-            
-            // Show create event for organizers and admins
-            const canCreateEvent = user && (user.role === 'organizer' || user.role === 'admin');
-            document.getElementById('navCreateEvent').style.display = canCreateEvent ? 'block' : 'none';
-            
-            // Show users management only for admins and organizers
-            const canManageUsers = user && (user.role === 'admin' || user.role === 'organizer');
-            document.getElementById('navUsers').style.display = canManageUsers ? 'block' : 'none';
-        }
-
-        document.addEventListener('DOMContentLoaded', () => {
-            updateNavigation();
-            loadEvent();
-        });
+        document.addEventListener('DOMContentLoaded', loadActivity);
     </script>
 </body>
 </html>

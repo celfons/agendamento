@@ -1,53 +1,23 @@
 import { Request, Response } from 'express';
 import { RegisterToEventUseCase } from '../../usecases/RegisterToEventUseCase';
-import { RegisterGuestToEventUseCase } from '../../usecases/RegisterGuestToEventUseCase';
 import { UnregisterFromEventUseCase } from '../../usecases/UnregisterFromEventUseCase';
-import { ListEventRegistrationsUseCase } from '../../usecases/ListEventRegistrationsUseCase';
-import { AuthRequest } from '../../infrastructure/middleware/AuthMiddleware';
 
 export class EventRegistrationController {
   constructor(
     private registerToEventUseCase: RegisterToEventUseCase,
-    private registerGuestToEventUseCase: RegisterGuestToEventUseCase,
-    private unregisterFromEventUseCase: UnregisterFromEventUseCase,
-    private listEventRegistrationsUseCase: ListEventRegistrationsUseCase
+    private unregisterFromEventUseCase: UnregisterFromEventUseCase
   ) {}
 
-  async register(req: AuthRequest, res: Response): Promise<void> {
-    try {
-      if (!req.user) {
-        res.status(401).json({ error: 'Authentication required' });
-        return;
-      }
-
-      const { eventId } = req.params;
-      const registration = await this.registerToEventUseCase.execute(
-        eventId,
-        req.user.userId
-      );
-      res.status(201).json(registration);
-    } catch (error) {
-      res.status(400).json({ error: (error as Error).message });
-    }
-  }
-
-  async registerGuest(req: Request, res: Response): Promise<void> {
+  async register(req: Request, res: Response): Promise<void> {
     try {
       const { eventId } = req.params;
-      const { name, lastName, email, phone } = req.body;
+      const { name, phone } = req.body;
 
       // Validate required fields
-      if (!name || !lastName || !email || !phone) {
+      if (!name || !phone) {
         res.status(400).json({ 
-          error: 'All fields are required: name, lastName, email, phone' 
+          error: 'Name and phone are required' 
         });
-        return;
-      }
-
-      // Basic email validation
-      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      if (!emailRegex.test(email)) {
-        res.status(400).json({ error: 'Invalid email format' });
         return;
       }
 
@@ -59,9 +29,10 @@ export class EventRegistrationController {
         return;
       }
 
-      const registration = await this.registerGuestToEventUseCase.execute(
+      const registration = await this.registerToEventUseCase.execute(
         eventId,
-        { name, lastName, email, phone: cleanedPhone }
+        name.trim(),
+        cleanedPhone
       );
       
       res.status(201).json(registration);
@@ -70,44 +41,21 @@ export class EventRegistrationController {
     }
   }
 
-  async unregister(req: AuthRequest, res: Response): Promise<void> {
+  async unregister(req: Request, res: Response): Promise<void> {
     try {
-      if (!req.user) {
-        res.status(401).json({ error: 'Authentication required' });
+      const { eventId } = req.params;
+      const { phone } = req.body;
+
+      if (!phone) {
+        res.status(400).json({ error: 'Phone number is required' });
         return;
       }
 
-      const { eventId } = req.params;
-      await this.unregisterFromEventUseCase.execute(eventId, req.user.userId);
+      const cleanedPhone = phone.replace(/[\s\-()]/g, '');
+      await this.unregisterFromEventUseCase.execute(eventId, cleanedPhone);
       res.status(204).send();
     } catch (error) {
       res.status(400).json({ error: (error as Error).message });
-    }
-  }
-
-  async listByEvent(req: AuthRequest, res: Response): Promise<void> {
-    try {
-      const { eventId } = req.params;
-      const registrations = await this.listEventRegistrationsUseCase.executeByEvent(eventId);
-      res.status(200).json(registrations);
-    } catch (error) {
-      res.status(500).json({ error: (error as Error).message });
-    }
-  }
-
-  async listByUser(req: AuthRequest, res: Response): Promise<void> {
-    try {
-      if (!req.user) {
-        res.status(401).json({ error: 'Authentication required' });
-        return;
-      }
-
-      const registrations = await this.listEventRegistrationsUseCase.executeByUser(
-        req.user.userId
-      );
-      res.status(200).json(registrations);
-    } catch (error) {
-      res.status(500).json({ error: (error as Error).message });
     }
   }
 }

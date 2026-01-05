@@ -5,16 +5,13 @@ export interface IEventDocument extends Omit<Event, 'id'>, Document {}
 
 const EventSchema: Schema = new Schema(
   {
-    name: { type: String, required: true },
+    title: { type: String, required: true },
     description: { type: String, required: true },
-    date: { type: Date, required: true },
+    startTime: { type: Date, required: true },
+    endTime: { type: Date, required: true },
     location: { type: String, required: true },
     maxParticipants: { type: Number, required: true, min: 1 },
-    availableSlots: { type: Number, required: true, min: 0 },
-    organizers: { type: [String], required: true },
-    createdBy: { type: Schema.Types.ObjectId, ref: 'User' },
-    groupId: { type: Schema.Types.ObjectId, ref: 'Group' },
-    isPublic: { type: Boolean, default: true }
+    availableSlots: { type: Number, required: true, min: 0 }
   },
   {
     timestamps: true,
