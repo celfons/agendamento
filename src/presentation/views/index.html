@@ -295,9 +295,24 @@
                             <i class="bi bi-grid-fill"></i> Eventos
                         </a>
                     </li>
-                    <li class="nav-item">
+                    <li class="nav-item" id="navCreateEvent" style="display: none;">
                         <a class="nav-link" href="/create">
                             <i class="bi bi-plus-circle-fill"></i> Criar Evento
+                        </a>
+                    </li>
+                    <li class="nav-item" id="navUsers" style="display: none;">
+                        <a class="nav-link" href="/users">
+                            <i class="bi bi-people-fill"></i> Usuários
+                        </a>
+                    </li>
+                    <li class="nav-item" id="navLogin">
+                        <a class="nav-link" href="/login">
+                            <i class="bi bi-box-arrow-in-right"></i> Login
+                        </a>
+                    </li>
+                    <li class="nav-item" id="navLogout" style="display: none;">
+                        <a class="nav-link" href="#" onclick="handleLogout(event)">
+                            <i class="bi bi-box-arrow-right"></i> Sair
                         </a>
                     </li>
                 </ul>
@@ -407,9 +422,16 @@
                             <a href="/event/${event.id}" class="btn-detail">
                                 <i class="bi bi-eye-fill"></i> Ver Detalhes
                             </a>
+                            ${event.isPublic && event.availableSlots > 0 ? `
+                            <a href="/register-event?eventId=${event.id}" class="btn-detail" style="background: var(--success-color);">
+                                <i class="bi bi-person-plus-fill"></i> Inscrever
+                            </a>
+                            ` : ''}
+                            ${isAuthenticated() ? `
                             <button onclick="deleteEvent('${event.id}')" class="btn-delete">
                                 <i class="bi bi-trash-fill"></i>
                             </button>
+                            ` : ''}
                         </div>
                     </div>
                 </div>
@@ -431,6 +453,36 @@
             const div = document.createElement('div');
             div.textContent = text;
             return div.innerHTML;
+        }
+
+        function isAuthenticated() {
+            const token = localStorage.getItem('token');
+            return !!token;
+        }
+
+        function handleLogout(event) {
+            event.preventDefault();
+            localStorage.removeItem('token');
+            localStorage.removeItem('user');
+            updateNavigation();
+            loadEvents();
+        }
+
+        function updateNavigation() {
+            const authenticated = isAuthenticated();
+            const user = authenticated ? JSON.parse(localStorage.getItem('user') || '{}') : null;
+            
+            // Show/hide navigation items based on authentication
+            document.getElementById('navLogin').style.display = authenticated ? 'none' : 'block';
+            document.getElementById('navLogout').style.display = authenticated ? 'block' : 'none';
+            
+            // Show create event for organizers and admins
+            const canCreateEvent = user && (user.role === 'organizer' || user.role === 'admin');
+            document.getElementById('navCreateEvent').style.display = canCreateEvent ? 'block' : 'none';
+            
+            // Show users management only for admins and organizers
+            const canManageUsers = user && (user.role === 'admin' || user.role === 'organizer');
+            document.getElementById('navUsers').style.display = canManageUsers ? 'block' : 'none';
         }
 
         async function deleteEvent(id) {
@@ -456,7 +508,10 @@
         }
 
         // Load events on page load
-        document.addEventListener('DOMContentLoaded', loadEvents);
+        document.addEventListener('DOMContentLoaded', () => {
+            updateNavigation();
+            loadEvents();
+        });
     </script>
 </body>
 </html>

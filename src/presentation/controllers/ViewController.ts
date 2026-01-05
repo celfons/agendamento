@@ -13,4 +13,16 @@ export class ViewController {
   async renderEventDetail(_req: Request, res: Response): Promise<void> {
     res.sendFile(path.join(__dirname, '../views/event-detail.html'));
   }
+
+  async renderLogin(_req: Request, res: Response): Promise<void> {
+    res.sendFile(path.join(__dirname, '../views/login.html'));
+  }
+
+  async renderRegisterEvent(_req: Request, res: Response): Promise<void> {
+    res.sendFile(path.join(__dirname, '../views/register-event.html'));
+  }
+
+  async renderUsers(_req: Request, res: Response): Promise<void> {
+    res.sendFile(path.join(__dirname, '../views/users.html'));
+  }
 }
