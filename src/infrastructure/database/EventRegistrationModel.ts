@@ -28,13 +28,13 @@ EventRegistrationSchema.index({ eventId: 1, userId: 1 }, { unique: true, sparse:
 EventRegistrationSchema.index({ eventId: 1, clientId: 1 }, { unique: true, sparse: true });
 
 // Validation: Either userId or clientId must be present, but not both
-EventRegistrationSchema.pre('validate', function(next) {
-  if (!this.userId && !this.clientId) {
-    next(new Error('Either userId or clientId must be provided'));
-  } else if (this.userId && this.clientId) {
-    next(new Error('Cannot have both userId and clientId'));
-  } else {
-    next();
+EventRegistrationSchema.pre('validate', function() {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const doc = this as any;
+  if (!doc.userId && !doc.clientId) {
+    throw new Error('Either userId or clientId must be provided');
+  } else if (doc.userId && doc.clientId) {
+    throw new Error('Cannot have both userId and clientId');
   }
 });
 

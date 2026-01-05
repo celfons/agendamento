@@ -51,10 +51,11 @@ export class EventRegistrationController {
         return;
       }
 
-      // Basic phone validation (at least 10 digits)
-      const phoneRegex = /^\+?[\d\s\-()]{10,}$/;
-      if (!phoneRegex.test(phone)) {
-        res.status(400).json({ error: 'Invalid phone format' });
+      // Basic phone validation (at least 10 digits with optional + and formatting characters)
+      const phoneRegex = /^\+?[\d]{10,}$/;
+      const cleanedPhone = phone.replace(/[\s\-()]/g, '');
+      if (!phoneRegex.test(cleanedPhone)) {
+        res.status(400).json({ error: 'Invalid phone format. Phone must contain at least 10 digits' });
         return;
       }
 

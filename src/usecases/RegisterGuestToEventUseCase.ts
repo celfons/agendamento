@@ -38,10 +38,15 @@ export class RegisterGuestToEventUseCase {
     let client = await this.clientRepository.findByEmailOrPhone(guestData.email, guestData.phone);
     
     if (client) {
+      // Validate client has an ID
+      if (!client.id) {
+        throw new Error('Invalid client data');
+      }
+      
       // Check if this client is already registered for this event
       const existingRegistration = await this.eventRegistrationRepository.findByEventAndClient(
         eventId,
-        client.id!
+        client.id
       );
       
       if (existingRegistration) {
@@ -55,6 +60,10 @@ export class RegisterGuestToEventUseCase {
         email: guestData.email,
         phone: guestData.phone,
       });
+      
+      if (!client.id) {
+        throw new Error('Failed to create client');
+      }
     }
 
     // Create registration
