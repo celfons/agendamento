@@ -52,8 +52,8 @@ export class MongoEventRegistrationRepository implements IEventRegistrationRepos
       eventId: doc.eventId.toString(),
       userId: doc.userId.toString(),
       status: doc.status,
-      registeredAt: (doc as any).createdAt,
-      updatedAt: (doc as any).updatedAt
+      registeredAt: doc.createdAt,
+      updatedAt: doc.updatedAt
     };
   }
 }

@@ -1,7 +1,10 @@
 import mongoose, { Schema, Document } from 'mongoose';
 import { EventRegistration, RegistrationStatus } from '../../domain/entities/EventRegistration';
 
-export interface IEventRegistrationDocument extends Omit<EventRegistration, 'id'>, Document {}
+export interface IEventRegistrationDocument extends Omit<EventRegistration, 'id' | 'registeredAt'>, Document {
+  createdAt: Date;
+  updatedAt: Date;
+}
 
 const EventRegistrationSchema: Schema = new Schema(
   {

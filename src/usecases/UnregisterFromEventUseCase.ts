@@ -23,8 +23,13 @@ export class UnregisterFromEventUseCase {
       throw new Error('User is not registered for this event');
     }
 
+    // Ensure registration has an id
+    if (!registration.id) {
+      throw new Error('Invalid registration record');
+    }
+
     // Delete registration
-    await this.eventRegistrationRepository.delete(registration.id!);
+    await this.eventRegistrationRepository.delete(registration.id);
 
     // Update available slots
     await this.eventRepository.update(eventId, {

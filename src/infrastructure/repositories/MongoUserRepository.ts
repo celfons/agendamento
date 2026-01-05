@@ -51,6 +51,14 @@ export class MongoUserRepository implements IUserRepository {
     return userDoc ? this.mapToEntity(userDoc) : null;
   }
 
+  async comparePassword(userId: string, password: string): Promise<boolean> {
+    const userDoc = await UserModel.findById(userId);
+    if (!userDoc) {
+      return false;
+    }
+    return userDoc.comparePassword(password);
+  }
+
   private mapToEntity(doc: IUserDocument): User {
     return {
       id: doc._id.toString(),

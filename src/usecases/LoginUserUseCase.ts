@@ -1,6 +1,5 @@
 import { IUserRepository } from '../domain/interfaces/IUserRepository';
 import { JwtService } from '../infrastructure/auth/JwtService';
-import { UserModel } from '../infrastructure/database/UserModel';
 
 export interface LoginRequest {
   email: string;
@@ -27,14 +26,8 @@ export class LoginUserUseCase {
       throw new Error('Invalid email or password');
     }
 
-    // Get the document to access comparePassword method
-    const userDoc = await UserModel.findById(user.id);
-    if (!userDoc) {
-      throw new Error('Invalid email or password');
-    }
-
-    // Compare passwords
-    const isPasswordValid = await userDoc.comparePassword(loginData.password);
+    // Compare passwords using repository method
+    const isPasswordValid = await this.userRepository.comparePassword(user.id!, loginData.password);
     if (!isPasswordValid) {
       throw new Error('Invalid email or password');
     }

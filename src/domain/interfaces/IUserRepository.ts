@@ -9,4 +9,5 @@ export interface IUserRepository {
   delete(id: string): Promise<boolean>;
   addToGroup(userId: string, groupId: string): Promise<User | null>;
   removeFromGroup(userId: string, groupId: string): Promise<User | null>;
+  comparePassword(userId: string, password: string): Promise<boolean>;
 }
