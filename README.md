@@ -33,12 +33,32 @@ src/
 
 ## 🚀 Funcionalidades
 
+### Autenticação e Autorização
+
+- ✅ Registro de usuários (com roles: user, organizer, admin)
+- ✅ Login com JWT
+- ✅ Middleware de autenticação
+- ✅ Controle de acesso baseado em roles
+
+### Gestão de Grupos
+
+- ✅ Criação de grupos de organizadores
+- ✅ Gerenciamento de membros
+- ✅ Controle de admins do grupo
+
+### Inscrição em Eventos
+
+- ✅ Usuários externos podem se inscrever em eventos públicos
+- ✅ Gerenciamento automático de vagas disponíveis
+- ✅ Listagem de inscrições por usuário
+- ✅ Cancelamento de inscrição
+
 ### Painel Administrativo
 
-- ✅ Listagem de eventos
-- ✅ Criação de eventos
-- ✅ Edição de eventos
-- ✅ Exclusão de eventos
+- ✅ Listagem de eventos (pública)
+- ✅ Criação de eventos (protegida - admin/organizer)
+- ✅ Edição de eventos (protegida - admin/organizer)
+- ✅ Exclusão de eventos (protegida - admin/organizer)
 - ✅ Visualização detalhada de eventos
 
 ### Gestão de Eventos
@@ -51,6 +71,9 @@ Cada evento contém:
 - Número máximo de participantes
 - Vagas disponíveis
 - Lista de organizadores
+- Indicador se é público (permite inscrições externas)
+- Criador do evento
+- Grupo responsável (opcional)
 
 ## 🛠️ Tecnologias
 
@@ -59,6 +82,9 @@ Cada evento contém:
 - **Express** - Framework web
 - **MongoDB** - Banco de dados NoSQL
 - **Mongoose** - ODM para MongoDB
+- **JWT** - JSON Web Tokens para autenticação
+- **bcryptjs** - Hash de senhas
+- **express-validator** - Validação de dados
 - **Bootstrap 5** - Framework CSS
 - **Bootstrap Icons** - Ícones
 
@@ -93,7 +119,10 @@ Edite o arquivo `.env` com suas configurações:
 PORT=3000
 NODE_ENV=development
 MONGO_URI=mongodb://localhost:27017/agendamento
+JWT_SECRET=your-secret-key-change-in-production
 ```
+
+**IMPORTANTE:** Mude o `JWT_SECRET` para uma chave secreta forte em produção!
 
 4. **Opção A: Usando Docker Compose (Recomendado)**
 
@@ -159,49 +188,31 @@ docker-compose down
 
 ## 📖 API Endpoints
 
-### Events API
+Para documentação completa da API incluindo autenticação, gestão de usuários, grupos e inscrições em eventos, consulte [API_DOCUMENTATION.md](./API_DOCUMENTATION.md).
 
-#### Criar Evento
-```http
-POST /api/events
-Content-Type: application/json
+### Resumo dos Endpoints
 
-{
-  "name": "Workshop de Node.js",
-  "description": "Workshop prático sobre desenvolvimento backend",
-  "date": "2024-12-20T14:00:00",
-  "location": "São Paulo, SP",
-  "maxParticipants": 50,
-  "availableSlots": 50,
-  "organizers": ["João Silva", "Maria Santos"]
-}
-```
+#### Autenticação (Público)
+- `POST /api/auth/register` - Registrar novo usuário
+- `POST /api/auth/login` - Login (retorna JWT token)
 
-#### Listar Eventos
-```http
-GET /api/events
-```
+#### Eventos
+- `GET /api/events` - Listar todos os eventos (público)
+- `GET /api/events/:id` - Buscar evento por ID (público)
+- `POST /api/events` - Criar evento (requer autenticação: admin/organizer)
+- `PUT /api/events/:id` - Atualizar evento (requer autenticação: admin/organizer)
+- `DELETE /api/events/:id` - Deletar evento (requer autenticação: admin/organizer)
 
-#### Buscar Evento por ID
-```http
-GET /api/events/:id
-```
+#### Inscrições em Eventos (Requer Autenticação)
+- `POST /api/registrations/events/:eventId` - Inscrever-se em um evento
+- `DELETE /api/registrations/events/:eventId` - Cancelar inscrição
+- `GET /api/registrations/my-registrations` - Listar minhas inscrições
+- `GET /api/registrations/events/:eventId` - Listar inscrições de um evento
 
-#### Atualizar Evento
-```http
-PUT /api/events/:id
-Content-Type: application/json
-
-{
-  "name": "Workshop de Node.js Avançado",
-  "availableSlots": 45
-}
-```
-
-#### Deletar Evento
-```http
-DELETE /api/events/:id
-```
+#### Grupos (Requer Autenticação)
+- `POST /api/groups` - Criar grupo (admin/organizer)
+- `GET /api/groups` - Listar grupos
+- `POST /api/groups/:groupId/members` - Adicionar membro ao grupo
 
 ## 🎨 Interface
 
@@ -220,11 +231,31 @@ DELETE /api/events/:id
 
 ## 🧪 Validações de Negócio
 
+### Eventos
 - Número máximo de participantes deve ser maior que 0
 - Vagas disponíveis não podem exceder o máximo de participantes
 - Data do evento deve ser no futuro
 - Nome do evento é obrigatório
 - Pelo menos um organizador é obrigatório
+
+### Usuários
+- Email deve ser único
+- Senha deve ter no mínimo 6 caracteres
+- Nome é obrigatório
+
+### Inscrições
+- Usuário pode se inscrever apenas em eventos públicos
+- Usuário não pode se inscrever duas vezes no mesmo evento
+- Evento deve ter vagas disponíveis
+
+## 🔒 Segurança
+
+- Senhas são criptografadas com bcrypt antes de serem armazenadas
+- Autenticação baseada em JWT (JSON Web Tokens)
+- Tokens expiram após 24 horas
+- Controle de acesso baseado em roles (user, organizer, admin)
+- Proteção de rotas sensíveis com middleware de autenticação
+- Validação de dados de entrada com express-validator
 
 ## 🔒 Princípios SOLID Aplicados
 
