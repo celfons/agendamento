@@ -1,5 +1,4 @@
 import { EventRegistration, RegistrationStatus } from '../domain/entities/EventRegistration';
-import { Client } from '../domain/entities/Client';
 import { IEventRegistrationRepository } from '../domain/interfaces/IEventRegistrationRepository';
 import { IEventRepository } from '../domain/interfaces/IEventRepository';
 import { IClientRepository } from '../domain/interfaces/IClientRepository';

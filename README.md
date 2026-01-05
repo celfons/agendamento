@@ -48,7 +48,10 @@ src/
 
 ### Inscrição em Eventos
 
-- ✅ Usuários externos podem se inscrever em eventos públicos
+- ✅ Inscrição pública sem necessidade de autenticação (guests)
+- ✅ Clientes informam apenas: nome, sobrenome, e-mail e telefone
+- ✅ Validação automática de duplicatas por e-mail e telefone
+- ✅ Usuários autenticados também podem se inscrever em eventos públicos
 - ✅ Gerenciamento automático de vagas disponíveis
 - ✅ Listagem de inscrições por usuário
 - ✅ Cancelamento de inscrição
@@ -203,10 +206,11 @@ Para documentação completa da API incluindo autenticação, gestão de usuári
 - `PUT /api/events/:id` - Atualizar evento (requer autenticação: admin/organizer)
 - `DELETE /api/events/:id` - Deletar evento (requer autenticação: admin/organizer)
 
-#### Inscrições em Eventos (Requer Autenticação)
-- `POST /api/registrations/events/:eventId` - Inscrever-se em um evento
-- `DELETE /api/registrations/events/:eventId` - Cancelar inscrição
-- `GET /api/registrations/my-registrations` - Listar minhas inscrições
+#### Inscrições em Eventos
+- `POST /api/registrations/public/events/:eventId` - Inscrição pública (sem autenticação)
+- `POST /api/registrations/events/:eventId` - Inscrever-se em um evento (requer autenticação)
+- `DELETE /api/registrations/events/:eventId` - Cancelar inscrição (requer autenticação)
+- `GET /api/registrations/my-registrations` - Listar minhas inscrições (requer autenticação)
 - `GET /api/registrations/events/:eventId` - Listar inscrições de um evento
 
 #### Grupos (Requer Autenticação)
@@ -244,8 +248,13 @@ Para documentação completa da API incluindo autenticação, gestão de usuári
 - Nome é obrigatório
 
 ### Inscrições
-- Usuário pode se inscrever apenas em eventos públicos
-- Usuário não pode se inscrever duas vezes no mesmo evento
+- Clientes (guests) podem se inscrever sem autenticação fornecendo: nome, sobrenome, e-mail e telefone
+- Validação de duplicatas: cliente não pode se registrar duas vezes no mesmo evento (verificado por e-mail ou telefone)
+- Email e telefone devem ser únicos no sistema
+- Formato de e-mail é validado
+- Formato de telefone é validado (mínimo 10 dígitos)
+- Usuários autenticados podem se inscrever apenas em eventos públicos
+- Usuários autenticados não podem se inscrever duas vezes no mesmo evento
 - Evento deve ter vagas disponíveis
 
 ## 🔒 Segurança

@@ -143,7 +143,52 @@ Content-Type: application/json
 
 ## Event Registration
 
-### Register for an Event
+## Event Registration API
+
+### Register as Guest (Public - No Authentication Required)
+
+**Endpoint:** `POST /api/registrations/public/events/:eventId`
+
+**Authentication:** Not required
+
+**Body:**
+```json
+{
+  "name": "João",
+  "lastName": "Silva",
+  "email": "joao.silva@example.com",
+  "phone": "+5511987654321"
+}
+```
+
+**Response:**
+```json
+{
+  "id": "registrationId123",
+  "eventId": "eventId123",
+  "clientId": "clientId123",
+  "status": "confirmed",
+  "registeredAt": "2026-01-05T15:00:00.000Z",
+  "updatedAt": "2026-01-05T15:00:00.000Z"
+}
+```
+
+**Notes:**
+- Event must be public (`isPublic: true`)
+- Event must have available slots
+- All fields (name, lastName, email, phone) are required
+- If a client with the same email or phone already exists, they will be reused
+- A client cannot register twice for the same event (validated by email or phone)
+- Email format is validated
+- Phone format is validated (minimum 10 digits)
+
+**Error Responses:**
+- `400 Bad Request` - When required fields are missing or invalid
+- `400 Bad Request` - When client is already registered for the event
+- `400 Bad Request` - When event is not public or has no available slots
+- `404 Not Found` - When event does not exist
+
+### Register for an Event (Authenticated Users)
 
 **Endpoint:** `POST /api/registrations/events/:eventId`
 
