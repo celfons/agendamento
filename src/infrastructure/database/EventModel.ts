@@ -12,6 +12,9 @@ const EventSchema: Schema = new Schema(
     maxParticipants: { type: Number, required: true, min: 1 },
     availableSlots: { type: Number, required: true, min: 0 },
     organizers: { type: [String], required: true },
+    createdBy: { type: Schema.Types.ObjectId, ref: 'User' },
+    groupId: { type: Schema.Types.ObjectId, ref: 'Group' },
+    isPublic: { type: Boolean, default: true }
   },
   {
     timestamps: true,
