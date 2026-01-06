@@ -3,11 +3,7 @@ import { IEventRegistrationRepository } from '../domain/interfaces/IEventRegistr
 export class ListEventRegistrationsUseCase {
   constructor(private eventRegistrationRepository: IEventRegistrationRepository) {}
 
-  async executeByEvent(eventId: string) {
+  async execute(eventId: string) {
     return this.eventRegistrationRepository.findByEventId(eventId);
-  }
-
-  async executeByUser(userId: string) {
-    return this.eventRegistrationRepository.findByUserId(userId);
   }
 }

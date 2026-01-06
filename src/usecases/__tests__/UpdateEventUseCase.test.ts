@@ -20,19 +20,19 @@ describe('UpdateEventUseCase', () => {
 
   const existingEvent: Event = {
     id: '123',
-    name: 'Existing Event',
+    title: 'Existing Event',
     description: 'Existing Description',
-    date: new Date(Date.now() + 86400000),
+    startTime: new Date(Date.now() + 86400000),
+    endTime: new Date(Date.now() + 90000000),
     location: 'Existing Location',
     maxParticipants: 10,
     availableSlots: 5,
-    organizers: ['organizer1'],
   };
 
   describe('execute', () => {
     it('should update event successfully with valid data', async () => {
       const updateData: Partial<Event> = {
-        name: 'Updated Event',
+        title: 'Updated Event',
         description: 'Updated Description',
       };
 
@@ -60,18 +60,18 @@ describe('UpdateEventUseCase', () => {
     it('should return null when event is not found', async () => {
       mockEventRepository.findById.mockResolvedValue(null);
 
-      const result = await updateEventUseCase.execute('999', { name: 'New Name' });
+      const result = await updateEventUseCase.execute('999', { title: 'New Title' });
 
       expect(result).toBeNull();
       expect(mockEventRepository.update).not.toHaveBeenCalled();
     });
 
-    it('should validate date when provided in update', async () => {
+    it('should validate startTime when provided in update', async () => {
       const pastDate = new Date('2020-01-01');
       mockEventRepository.findById.mockResolvedValue(existingEvent);
 
       await expect(
-        updateEventUseCase.execute('123', { date: pastDate })
+        updateEventUseCase.execute('123', { startTime: pastDate })
       ).rejects.toThrow('Event date must be in the future');
       expect(mockEventRepository.update).not.toHaveBeenCalled();
     });
@@ -136,7 +136,7 @@ describe('UpdateEventUseCase', () => {
       mockEventRepository.update.mockRejectedValue(new Error('Database error'));
 
       await expect(
-        updateEventUseCase.execute('123', { name: 'New Name' })
+        updateEventUseCase.execute('123', { title: 'New Title' })
       ).rejects.toThrow('Database error');
     });
   });

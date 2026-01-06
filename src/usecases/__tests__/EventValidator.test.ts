@@ -56,67 +56,49 @@ describe('EventValidator', () => {
     });
   });
 
-  describe('validateName', () => {
-    it('should throw error when name is undefined', () => {
-      expect(() => EventValidator.validateName(undefined)).toThrow(
-        'Event name is required'
+  describe('validateTitle', () => {
+    it('should throw error when title is undefined', () => {
+      expect(() => EventValidator.validateTitle(undefined)).toThrow(
+        'Event title is required'
       );
     });
 
-    it('should throw error when name is empty string', () => {
-      expect(() => EventValidator.validateName('')).toThrow(
-        'Event name is required'
+    it('should throw error when title is empty string', () => {
+      expect(() => EventValidator.validateTitle('')).toThrow(
+        'Event title is required'
       );
     });
 
-    it('should throw error when name is only whitespace', () => {
-      expect(() => EventValidator.validateName('   ')).toThrow(
-        'Event name is required'
+    it('should throw error when title is only whitespace', () => {
+      expect(() => EventValidator.validateTitle('   ')).toThrow(
+        'Event title is required'
       );
     });
 
-    it('should not throw error when name is valid', () => {
-      expect(() => EventValidator.validateName('Valid Event Name')).not.toThrow();
-    });
-  });
-
-  describe('validateOrganizers', () => {
-    it('should throw error when organizers is undefined', () => {
-      expect(() => EventValidator.validateOrganizers(undefined)).toThrow(
-        'At least one organizer is required'
-      );
-    });
-
-    it('should throw error when organizers is empty array', () => {
-      expect(() => EventValidator.validateOrganizers([])).toThrow(
-        'At least one organizer is required'
-      );
-    });
-
-    it('should not throw error when organizers has at least one element', () => {
-      expect(() => EventValidator.validateOrganizers(['organizer1'])).not.toThrow();
+    it('should not throw error when title is valid', () => {
+      expect(() => EventValidator.validateTitle('Valid Event Title')).not.toThrow();
     });
   });
 
   describe('validateCreateEvent', () => {
     const validEvent: Event = {
-      name: 'Test Event',
+      title: 'Test Event',
       description: 'Test Description',
-      date: new Date(Date.now() + 86400000),
+      startTime: new Date(Date.now() + 86400000),
+      endTime: new Date(Date.now() + 90000000),
       location: 'Test Location',
       maxParticipants: 10,
       availableSlots: 10,
-      organizers: ['organizer1'],
     };
 
     it('should not throw error for valid event', () => {
       expect(() => EventValidator.validateCreateEvent(validEvent)).not.toThrow();
     });
 
-    it('should throw error when name is missing', () => {
-      const invalidEvent = { ...validEvent, name: '' };
+    it('should throw error when title is missing', () => {
+      const invalidEvent = { ...validEvent, title: '' };
       expect(() => EventValidator.validateCreateEvent(invalidEvent)).toThrow(
-        'Event name is required'
+        'Event title is required'
       );
     });
 
@@ -134,25 +116,18 @@ describe('EventValidator', () => {
       );
     });
 
-    it('should throw error when date is in the past', () => {
-      const invalidEvent = { ...validEvent, date: new Date('2020-01-01') };
+    it('should throw error when startTime is in the past', () => {
+      const invalidEvent = { ...validEvent, startTime: new Date('2020-01-01') };
       expect(() => EventValidator.validateCreateEvent(invalidEvent)).toThrow(
         'Event date must be in the future'
-      );
-    });
-
-    it('should throw error when organizers are missing', () => {
-      const invalidEvent = { ...validEvent, organizers: [] };
-      expect(() => EventValidator.validateCreateEvent(invalidEvent)).toThrow(
-        'At least one organizer is required'
       );
     });
   });
 
   describe('validateUpdateEvent', () => {
-    it('should validate date when provided', () => {
+    it('should validate startTime when provided', () => {
       const pastDate = new Date('2020-01-01');
-      expect(() => EventValidator.validateUpdateEvent({ date: pastDate })).toThrow(
+      expect(() => EventValidator.validateUpdateEvent({ startTime: pastDate })).toThrow(
         'Event date must be in the future'
       );
     });
@@ -172,7 +147,7 @@ describe('EventValidator', () => {
     it('should not throw error for valid partial update', () => {
       const futureDate = new Date(Date.now() + 86400000);
       expect(() =>
-        EventValidator.validateUpdateEvent({ date: futureDate, maxParticipants: 20 })
+        EventValidator.validateUpdateEvent({ startTime: futureDate, maxParticipants: 20 })
       ).not.toThrow();
     });
   });
