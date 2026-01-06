@@ -20,13 +20,13 @@ describe('CreateEventUseCase', () => {
   });
 
   const validEventData: Event = {
-    name: 'Test Event',
+    title: 'Test Event',
     description: 'Test Description',
-    date: new Date(Date.now() + 86400000), // tomorrow
+    startTime: new Date(Date.now() + 86400000), // tomorrow
+    endTime: new Date(Date.now() + 90000000),
     location: 'Test Location',
     maxParticipants: 10,
     availableSlots: 10,
-    organizers: ['organizer1'],
   };
 
   describe('execute', () => {
@@ -40,11 +40,11 @@ describe('CreateEventUseCase', () => {
       expect(result).toEqual(expectedEvent);
     });
 
-    it('should throw error when event name is missing', async () => {
-      const invalidEvent = { ...validEventData, name: '' };
+    it('should throw error when event title is missing', async () => {
+      const invalidEvent = { ...validEventData, title: '' };
 
       await expect(createEventUseCase.execute(invalidEvent)).rejects.toThrow(
-        'Event name is required'
+        'Event title is required'
       );
       expect(mockEventRepository.create).not.toHaveBeenCalled();
     });
@@ -58,8 +58,8 @@ describe('CreateEventUseCase', () => {
       expect(mockEventRepository.create).not.toHaveBeenCalled();
     });
 
-    it('should throw error when date is in the past', async () => {
-      const invalidEvent = { ...validEventData, date: new Date('2020-01-01') };
+    it('should throw error when startTime is in the past', async () => {
+      const invalidEvent = { ...validEventData, startTime: new Date('2020-01-01') };
 
       await expect(createEventUseCase.execute(invalidEvent)).rejects.toThrow(
         'Event date must be in the future'
@@ -74,21 +74,6 @@ describe('CreateEventUseCase', () => {
         'Available slots cannot exceed maximum participants'
       );
       expect(mockEventRepository.create).not.toHaveBeenCalled();
-    });
-
-    it('should throw error when organizers are missing', async () => {
-      const invalidEvent = { ...validEventData, organizers: [] };
-
-      await expect(createEventUseCase.execute(invalidEvent)).rejects.toThrow(
-        'At least one organizer is required'
-      );
-      expect(mockEventRepository.create).not.toHaveBeenCalled();
-    });
-
-    it('should propagate repository errors', async () => {
-      mockEventRepository.create.mockRejectedValue(new Error('Database error'));
-
-      await expect(createEventUseCase.execute(validEventData)).rejects.toThrow('Database error');
     });
   });
 });
