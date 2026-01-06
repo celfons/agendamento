@@ -25,29 +25,22 @@ export class EventValidator {
     }
   }
 
-  static validateName(name?: string): void {
-    if (!name || name.trim() === '') {
-      throw new Error('Event name is required');
-    }
-  }
-
-  static validateOrganizers(organizers?: string[]): void {
-    if (!organizers || organizers.length === 0) {
-      throw new Error('At least one organizer is required');
+  static validateTitle(title?: string): void {
+    if (!title || title.trim() === '') {
+      throw new Error('Event title is required');
     }
   }
 
   static validateCreateEvent(event: Event): void {
-    this.validateName(event.name);
+    this.validateTitle(event.title);
     this.validateMaxParticipants(event.maxParticipants);
     this.validateAvailableSlots(event.availableSlots, event.maxParticipants);
-    this.validateDate(event.date);
-    this.validateOrganizers(event.organizers);
+    this.validateDate(event.startTime);
   }
 
   static validateUpdateEvent(eventData: Partial<Event>): void {
-    if (eventData.date) {
-      this.validateDate(eventData.date);
+    if (eventData.startTime) {
+      this.validateDate(eventData.startTime);
     }
 
     if (eventData.maxParticipants !== undefined) {
